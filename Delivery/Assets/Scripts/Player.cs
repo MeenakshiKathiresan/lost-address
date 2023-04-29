@@ -30,19 +30,17 @@ public class Player : MonoBehaviour
     Transform healthFill;
 
     [Header("Shooting Settings")]
-    [SerializeField]
-    Transform fireTransform;
 
     [SerializeField]
-    Transform bulletsParent;
+    float damage = 20f;
 
     [SerializeField]
     float coolDownTime = 1f;
 
-    float lastBulletTime = 0;
+    float lastAttackTime = 0;
 
     [SerializeField]
-    string bulletString = "playerBullet";
+    float attackRadius = 1f;
 
     [SerializeField]
     float totalHealth = 100;
@@ -77,10 +75,10 @@ public class Player : MonoBehaviour
         bool jumpKeyUp = Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.W);
 
 
-        if (Time.time - lastBulletTime > coolDownTime && Input.GetKeyDown(KeyCode.F))
+        if (Time.time - lastAttackTime > coolDownTime && Input.GetKeyDown(KeyCode.F))
         {
-            lastBulletTime = Time.time;
-            Fire();
+            lastAttackTime = Time.time;
+            Attack();
         }
 
         if (Input.GetKeyDown(KeyCode.Space) && isNearDoor)
@@ -137,11 +135,41 @@ public class Player : MonoBehaviour
 
     }
 
-    void Fire()
+    public void TakeDamage(float damage)
     {
-        Bullet bullet = (Bullet)PoolManager.Instantiate(bulletString, fireTransform.position, fireTransform.rotation);
-        bullet.transform.SetParent(bulletsParent);
-        bullet.SetDirection(moveDirection);
+        CurrentHealth -= damage;
+
+        Vector3 scale = healthFill.localScale;
+        scale.x = CurrentHealth / totalHealth;
+        healthFill.localScale = scale;
+
+        if (CurrentHealth <= 0)
+        {
+            Debug.Log("gameover");
+        }
+    }
+
+    void Attack()
+    {
+        Vector2 forward = new Vector2(transform.position.x + moveDirection, transform.position.y);
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(forward, attackRadius);
+
+        foreach (Collider2D collider in colliders)
+        {
+            if (collider.GetComponent<Enemy>())
+            {
+                Enemy enemy = collider.GetComponent<Enemy>();
+                enemy.TakeDamage(damage);
+                     
+            }
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Vector2 forward = new Vector2(transform.position.x + moveDirection, transform.position.y);
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(forward, attackRadius);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -175,19 +203,7 @@ public class Player : MonoBehaviour
             isNearDoor = true;
             currentDoor = collision.gameObject.GetComponent<Door>();
         }
-        else if (collision.gameObject.GetComponent<Bullet>())
-        {
-            Bullet bullet = collision.gameObject.GetComponent<Bullet>();
-            if (bullet.bulletType == BulletType.Enemy)
-            {
-                CurrentHealth -= bullet.Damage;
-                Vector3 updatedScale = healthFill.localScale;
-                updatedScale.x = CurrentHealth / totalHealth;
-                healthFill.localScale = updatedScale;
-
-                bullet.PoolDestroy();
-            }
-        }
+        
     }
 
     private void OnTriggerExit2D(Collider2D collision)

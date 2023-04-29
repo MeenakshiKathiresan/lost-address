@@ -9,6 +9,8 @@ public class Door : MonoBehaviour
     Civilian civilian;
     Enemy enemy;
 
+    bool doorOpened = false;
+
     public Direction DoorDirection
     {
         get
@@ -68,42 +70,44 @@ public class Door : MonoBehaviour
 
     public void OpenDoor()
     {
-        
-
-        if (isDestination)
+        if (!doorOpened)
         {
-            //level up
-        }
-        else if (hasEnemies)
-        {
-            enemy = (Enemy)PoolManager.Instantiate("enemy", transform.position, transform.rotation);
-        }
-        else
-        {
-            string directionToSpawn = "";
-            switch (doorDirection)
+            doorOpened = true;
+            if (isDestination)
             {
-                case Direction.right:
-                    directionToSpawn = "right";
-                    break;
-                case Direction.left:
-                    directionToSpawn = "left";
-                    break;
-                case Direction.up:
-                    directionToSpawn = "up";
-                    break;
-                case Direction.down:
-                    directionToSpawn = "down";
-                    break;
+                //level up
+            }
+            else if (hasEnemies)
+            {
+                enemy = (Enemy)PoolManager.Instantiate("enemy", transform.position, transform.rotation);
+                //enemy = (Enemy)PoolManager.Instantiate("enemy", transform.position, transform.rotation);
+            }
+            else
+            {
+                string directionToSpawn = "";
+                switch (doorDirection)
+                {
+                    case Direction.right:
+                        directionToSpawn = "right";
+                        break;
+                    case Direction.left:
+                        directionToSpawn = "left";
+                        break;
+                    case Direction.up:
+                        directionToSpawn = "up";
+                        break;
+                    case Direction.down:
+                        directionToSpawn = "down";
+                        break;
+                }
+
+                civilian = (Civilian)PoolManager.Instantiate(directionToSpawn, transform.position, transform.rotation);
+
             }
 
-            civilian = (Civilian)PoolManager.Instantiate(directionToSpawn, transform.position, transform.rotation);
-
+            transform.localScale = Vector3.zero;
+            StartCoroutine(CloseDoor());
         }
-
-        transform.localScale = Vector3.zero;
-        StartCoroutine(CloseDoor());
-
     }
 
     IEnumerator CloseDoor()

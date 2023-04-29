@@ -16,6 +16,8 @@ public class LevelSettings : MonoBehaviour
     public float doorWaitTime = 1f;
 
 
+
+
     public static LevelSettings instance;
 
     // Start is called before the first frame update
@@ -56,10 +58,9 @@ public class LevelSettings : MonoBehaviour
                 currentDoor.currentFloor = i;
                 currentDoor.currentDoor = j;
 
-                int hasEnemy = 1;// (int)Mathf.Round(Random.Range(0, 2));
-                Debug.Log(hasEnemy);
+                float spawnEnemyProbability = Random.Range(0f, 1f);
 
-                if (hasEnemy == 1)
+                if (spawnEnemyProbability > 0.5f)
                 {
                     currentDoor.HasEnemies = true;
                 }
@@ -81,6 +82,9 @@ public class LevelSettings : MonoBehaviour
             instance = this;
         else
             Destroy(this);
+
+        destinationFloor = Random.Range(1, floors.Count);
+        destinationDoor = Random.Range(0, floors[0].Doors.Count);
 
     }
 

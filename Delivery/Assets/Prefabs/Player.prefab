@@ -278,7 +278,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 5
-  m_Sprite: {fileID: 21300000, guid: 55b78702525c845c59647227f1da6923, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 672e9dfbb356b46afb7e4287741b22ae, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -307,10 +307,9 @@ MonoBehaviour:
   isGrounded: 0
   isOnLadder: 0
   healthFill: {fileID: 341797519}
-  fireTransform: {fileID: 1024488112}
-  bulletsParent: {fileID: 0}
+  damage: 20
   coolDownTime: 0.3
-  bulletString: playerBullet
+  attackRadius: 1
   totalHealth: 100
 --- !u!50 &7897003065596389626
 Rigidbody2D:
@@ -350,7 +349,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2, y: 2}
+    oldSize: {x: 1.26, y: 1.38}
     newSize: {x: 2.9, y: 2.22}
     adaptiveTilingThreshold: 0.5
     drawMode: 0

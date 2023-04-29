@@ -1,16 +1,15 @@
 ﻿<Properties StartupConfiguration="{E6BE7586-4BF3-FD3A-E315-5DE40A760405}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Enemy.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Player.cs">
     <Files>
-      <File FileName="Assets/Scripts/Player.cs" Line="132" Column="34" />
+      <File FileName="Assets/Scripts/Player.cs" Line="178" Column="9" />
       <File FileName="Assets/Scripts/CameraFollow.cs" Line="44" Column="29" />
-      <File FileName="Assets/Scripts/Bullet.cs" Line="18" Column="12" />
       <File FileName="Assets/Scripts/Object Pooling/IPoolable.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Floor.cs" Line="14" Column="26" />
-      <File FileName="Assets/Scripts/Door.cs" Line="49" Column="32" />
+      <File FileName="Assets/Scripts/Door.cs" Line="115" Column="1" />
       <File FileName="Assets/Scripts/LevelSettings.cs" Line="59" Column="36" />
       <File FileName="Assets/Scripts/Civilian.cs" Line="26" Column="39" />
       <File FileName="Assets/Scripts/GameManager.cs" Line="12" Column="28" />
-      <File FileName="Assets/Scripts/Enemy.cs" Line="13" Column="39" />
+      <File FileName="Assets/Scripts/Enemy.cs" Line="85" Column="54" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
