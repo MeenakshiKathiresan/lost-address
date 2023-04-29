@@ -10,6 +10,9 @@ public class Player : MonoBehaviour
     [SerializeField]
     float jumpPower;
 
+    [SerializeField]
+    float climbSpeed;
+
     int spriteDirection = 1;
     int moveDirection = 1;
 
@@ -18,6 +21,9 @@ public class Player : MonoBehaviour
     Rigidbody2D rigidbody;
 
     bool isGrounded;
+
+    bool isOnLadder;
+    float ladderX;
 
     // Start is called before the first frame update
     void Start()
@@ -30,12 +36,25 @@ public class Player : MonoBehaviour
     {
         xMovement = Input.GetAxis("Horizontal");
 
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        bool jumpKeyDown = Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.W);
+        bool jumpKeyUp = Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.W);
+
+        if (jumpKeyDown && isOnLadder)
+        {
+
+            rigidbody.velocity = new Vector2(rigidbody.velocity.x, climbSpeed);
+            Vector3 currentPosition = transform.position;
+            currentPosition.x = ladderX;
+            transform.position = currentPosition;
+        }
+
+
+        if (jumpKeyDown && isGrounded)
         {
             rigidbody.velocity = new Vector2(rigidbody.velocity.x, jumpPower);
         }
 
-        if (Input.GetKeyUp(KeyCode.Space) && rigidbody.velocity.y > 0)
+        if (jumpKeyUp && rigidbody.velocity.y > 0)
         {
             rigidbody.velocity = new Vector2(rigidbody.velocity.x, rigidbody.velocity.y * 0.5f);
         }
@@ -67,12 +86,35 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        isGrounded = true;
+        if (collision.gameObject.GetComponentInParent<Floor>())
+        {
+            isGrounded = true;
+        }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        isGrounded = false;
+        if (collision.gameObject.GetComponentInParent<Floor>())
+        {
+            isGrounded = false;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.GetComponent<Ladder>())
+        {
+            isOnLadder = true;
+            ladderX = collision.transform.position.x;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.GetComponent<Ladder>())
+        {
+            isOnLadder = false;
+        }
     }
 
     void flip()

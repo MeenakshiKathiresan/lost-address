@@ -352,7 +352,12 @@
 -r:"Library/Bee/artifacts/200b0aE.dag/Unity.VSCode.Editor.ref.dll"
 -r:"Library/Bee/artifacts/200b0aE.dag/UnityEditor.UI.ref.dll"
 -r:"Library/Bee/artifacts/200b0aE.dag/UnityEngine.UI.ref.dll"
+"Assets/Scripts/CameraFollow.cs"
+"Assets/Scripts/Floor.cs"
 "Assets/Scripts/GameManager.cs"
+"Assets/Scripts/Ladder.cs"
+"Assets/Scripts/Object Pooling/IPoolable.cs"
+"Assets/Scripts/Object Pooling/PoolManager.cs"
 "Assets/Scripts/Player.cs"
 -langversion:9.0
 
