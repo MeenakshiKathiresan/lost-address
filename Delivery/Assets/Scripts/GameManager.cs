@@ -4,7 +4,20 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public static GameManager instance;
+
+    [SerializeField]
+    public Player player;
+
+    private void OnEnable()
+    {
+        if (instance == null)
+            instance = this;
+        else
+            Destroy(this);
+
+    }
+
     void Start()
     {
         

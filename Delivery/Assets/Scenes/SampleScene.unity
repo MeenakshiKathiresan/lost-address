@@ -243,6 +243,10 @@ MonoBehaviour:
     objectToPool: {fileID: 5189640029203721166, guid: 48410da7dc62e446590bceab7c323c9e, type: 3}
   - objectName: down
     objectToPool: {fileID: 364886137773004582, guid: 0c7cfc97e5f5347e199007cf85e67f84, type: 3}
+  - objectName: enemyBullet
+    objectToPool: {fileID: 4760054597716764098, guid: 76848df67a6c94ee6bb80ecefb09928a, type: 3}
+  - objectName: enemy
+    objectToPool: {fileID: 7897003065596389630, guid: 23ea4b2425d8846829070897dca293f8, type: 3}
 --- !u!1 &269584346
 GameObject:
   m_ObjectHideFlags: 0
@@ -854,7 +858,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1057056241}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 10, z: 0}
+  m_LocalPosition: {x: 0.05, y: 10.02, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1157,6 +1161,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c447fac736fb4f7ca0354c311dd302d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 1440297853}
 --- !u!1 &1436148282
 GameObject:
   m_ObjectHideFlags: 0
@@ -1288,6 +1293,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7897003065596389628, guid: ecf6bff0f0fe64afb91bde0b22a86f1e, type: 3}
   m_PrefabInstance: {fileID: 2065584108245692742}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1440297853 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2065584108432075244, guid: ecf6bff0f0fe64afb91bde0b22a86f1e, type: 3}
+  m_PrefabInstance: {fileID: 2065584108245692742}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe473c861975a4059b398354a78c82ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1528055132
 GameObject:
   m_ObjectHideFlags: 0
@@ -1820,8 +1836,9 @@ MonoBehaviour:
   floors:
   - {fileID: 1528055136}
   - {fileID: 1589237007}
-  destinationFloor: 0
-  destinationDoor: 0
+  destinationFloor: 1
+  destinationDoor: 2
+  doorWaitTime: 1
 --- !u!1001 &1039326019246924617
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1935,10 +1952,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2065584108432075244, guid: ecf6bff0f0fe64afb91bde0b22a86f1e, type: 3}
-      propertyPath: coolDownTime
-      value: 0.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 2065584108432075244, guid: ecf6bff0f0fe64afb91bde0b22a86f1e, type: 3}
       propertyPath: bulletsParent
       value: 
       objectReference: {fileID: 1874137860}
@@ -1948,11 +1961,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7897003065596389628, guid: ecf6bff0f0fe64afb91bde0b22a86f1e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.9300003
+      value: -5.22
       objectReference: {fileID: 0}
     - target: {fileID: 7897003065596389628, guid: ecf6bff0f0fe64afb91bde0b22a86f1e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: -1.42
       objectReference: {fileID: 0}
     - target: {fileID: 7897003065596389628, guid: ecf6bff0f0fe64afb91bde0b22a86f1e, type: 3}
       propertyPath: m_LocalPosition.z

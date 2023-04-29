@@ -8,10 +8,19 @@ public class Bullet : MonoBehaviour, IPoolable
     float speed = 10;
 
     [SerializeField]
-    BulletType bulletType;
+    public BulletType bulletType;
+
+
 
     [SerializeField]
     float damage = 2f;
+
+    public float Damage
+    {
+        get { return damage; }
+    }
+
+
 
     [SerializeField]
     float gameBounds = 25f;
@@ -67,4 +76,4 @@ public class Bullet : MonoBehaviour, IPoolable
     }
 }
 
-enum BulletType {Player, Enemy}
+public enum BulletType {Player, Enemy}

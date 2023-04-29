@@ -26,6 +26,9 @@ public class Player : MonoBehaviour
     [SerializeField]
     bool isOnLadder;
 
+    [SerializeField]
+    Transform healthFill;
+
     [Header("Shooting Settings")]
     [SerializeField]
     Transform fireTransform;
@@ -40,6 +43,17 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     string bulletString = "playerBullet";
+
+    [SerializeField]
+    float totalHealth = 100;
+
+    float currentHealth = 100;
+
+    float CurrentHealth
+    {
+        get { return currentHealth; }
+        set { currentHealth = Mathf.Clamp(value, 0, 100); }
+    }
 
     Door currentDoor;
     bool isNearDoor;
@@ -111,10 +125,15 @@ public class Player : MonoBehaviour
 
     }
 
+    public Vector3 GetPlayerPosition()
+    {
+        return transform.position;
+    }
+
     private void FixedUpdate()
     {
         if (isGrounded || !isOnLadder)
-        rigidbody.velocity = new Vector2(xMovement * speed, rigidbody.velocity.y);
+            rigidbody.velocity = new Vector2(xMovement * speed, rigidbody.velocity.y);
 
     }
 
@@ -131,6 +150,8 @@ public class Player : MonoBehaviour
         {
             isGrounded = true;
         }
+
+
     }
 
     private void OnCollisionExit2D(Collision2D collision)
@@ -148,10 +169,24 @@ public class Player : MonoBehaviour
             isOnLadder = true;
             ladderX = collision.transform.position.x;
 
-        }else if (collision.gameObject.GetComponent<Door>())
+        }
+        else if (collision.gameObject.GetComponent<Door>())
         {
             isNearDoor = true;
             currentDoor = collision.gameObject.GetComponent<Door>();
+        }
+        else if (collision.gameObject.GetComponent<Bullet>())
+        {
+            Bullet bullet = collision.gameObject.GetComponent<Bullet>();
+            if (bullet.bulletType == BulletType.Enemy)
+            {
+                CurrentHealth -= bullet.Damage;
+                Vector3 updatedScale = healthFill.localScale;
+                updatedScale.x = CurrentHealth / totalHealth;
+                healthFill.localScale = updatedScale;
+
+                bullet.PoolDestroy();
+            }
         }
     }
 

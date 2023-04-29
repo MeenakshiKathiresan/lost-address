@@ -56,6 +56,18 @@ public class LevelSettings : MonoBehaviour
                 currentDoor.currentFloor = i;
                 currentDoor.currentDoor = j;
 
+                int hasEnemy = 1;// (int)Mathf.Round(Random.Range(0, 2));
+                Debug.Log(hasEnemy);
+
+                if (hasEnemy == 1)
+                {
+                    currentDoor.HasEnemies = true;
+                }
+                else
+                {
+                    currentDoor.HasEnemies = false;
+                }
+
             }
         }
 

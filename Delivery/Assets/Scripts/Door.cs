@@ -7,6 +7,7 @@ public class Door : MonoBehaviour
     Direction doorDirection;
 
     Civilian civilian;
+    Enemy enemy;
 
     public Direction DoorDirection
     {
@@ -37,6 +38,18 @@ public class Door : MonoBehaviour
 
     bool hasEnemies = false;
 
+    public bool HasEnemies
+    {
+        get
+        {
+            return hasEnemies;
+        }
+        set
+        {
+            hasEnemies = value;
+        }
+    }
+
     public int currentFloor;
     public int currentDoor;
 
@@ -63,7 +76,7 @@ public class Door : MonoBehaviour
         }
         else if (hasEnemies)
         {
-
+            enemy = (Enemy)PoolManager.Instantiate("enemy", transform.position, transform.rotation);
         }
         else
         {
@@ -98,6 +111,15 @@ public class Door : MonoBehaviour
         yield return new WaitForSeconds(LevelSettings.instance.doorWaitTime);
         transform.localScale = Vector3.one;
 
-        civilian.PoolDestroy();
+        if (isDestination) {
+
+        }
+        else if (hasEnemies) {
+
+        }
+        else
+        {
+            civilian.PoolDestroy();
+        }
     }
 }
