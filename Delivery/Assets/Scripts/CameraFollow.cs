@@ -39,7 +39,13 @@ public class CameraFollow : MonoBehaviour
         {
             targetPosition.x = target.x;
         }
-        targetPosition.y = Mathf.SmoothDamp(transform.position.y, target.y, ref velocity.y, ySmoothTime);
+
+
+        if (Mathf.Abs(target.y - transform.position.y) > yThreshold)
+        {
+            targetPosition.y = Mathf.SmoothDamp(transform.position.y, target.y, ref velocity.y, ySmoothTime);
+        }
+        
 
         transform.position = targetPosition;
 

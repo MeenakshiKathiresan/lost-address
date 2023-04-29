@@ -63,6 +63,7 @@
     <Compile Include="Assets/Scripts/CameraFollow.cs" />
     <Compile Include="Assets/Scripts/Object Pooling/IPoolable.cs" />
     <Compile Include="Assets/Scripts/Object Pooling/PoolManager.cs" />
+    <Compile Include="Assets/Scripts/Bullet.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

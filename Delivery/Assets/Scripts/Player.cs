@@ -20,10 +20,31 @@ public class Player : MonoBehaviour
 
     Rigidbody2D rigidbody;
 
+    [SerializeField]
     bool isGrounded;
 
+    [SerializeField]
     bool isOnLadder;
+
+    [Header("Shooting Settings")]
+    [SerializeField]
+    Transform fireTransform;
+
+    [SerializeField]
+    Transform bulletsParent;
+
+    [SerializeField]
+    float coolDownTime = 1f;
+
+    float lastBulletTime = 0;
+
+    [SerializeField]
+    string bulletString = "playerBullet";
+
+
     float ladderX;
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -39,13 +60,19 @@ public class Player : MonoBehaviour
         bool jumpKeyDown = Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.W);
         bool jumpKeyUp = Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.W);
 
+
+        if (Time.time - lastBulletTime > coolDownTime && Input.GetKeyDown(KeyCode.F))
+        {
+            lastBulletTime = Time.time;
+            Fire();
+        }
+
         if (jumpKeyDown && isOnLadder)
         {
-
-            rigidbody.velocity = new Vector2(rigidbody.velocity.x, climbSpeed);
-            Vector3 currentPosition = transform.position;
-            currentPosition.x = ladderX;
-            transform.position = currentPosition;
+            rigidbody.velocity = new Vector2(0, climbSpeed);
+            //Vector3 currentPosition = transform.position;
+            //currentPosition.x = ladderX;
+            //transform.position = currentPosition;
         }
 
 
@@ -59,7 +86,6 @@ public class Player : MonoBehaviour
             rigidbody.velocity = new Vector2(rigidbody.velocity.x, rigidbody.velocity.y * 0.5f);
         }
 
-        //transform.Translate(new Vector3(xMovement,0, 0) * Time.deltaTime * moveSpeed);
 
         if (xMovement > 0)
         {
@@ -79,9 +105,16 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-
+        if (isGrounded || !isOnLadder)
         rigidbody.velocity = new Vector2(xMovement * speed, rigidbody.velocity.y);
 
+    }
+
+    void Fire()
+    {
+        Bullet bullet = (Bullet)PoolManager.Instantiate(bulletString, fireTransform.position, fireTransform.rotation);
+        bullet.transform.SetParent(bulletsParent);
+        bullet.SetDirection(moveDirection);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -116,6 +149,8 @@ public class Player : MonoBehaviour
             isOnLadder = false;
         }
     }
+
+
 
     void flip()
     {
