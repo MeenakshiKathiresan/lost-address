@@ -41,6 +41,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     string bulletString = "playerBullet";
 
+    Door currentDoor;
+    bool isNearDoor;
 
     float ladderX;
 
@@ -66,6 +68,12 @@ public class Player : MonoBehaviour
             lastBulletTime = Time.time;
             Fire();
         }
+
+        if (Input.GetKeyDown(KeyCode.Space) && isNearDoor)
+        {
+            currentDoor.OpenDoor();
+        }
+
 
         if (jumpKeyDown && isOnLadder)
         {
@@ -139,6 +147,11 @@ public class Player : MonoBehaviour
         {
             isOnLadder = true;
             ladderX = collision.transform.position.x;
+
+        }else if (collision.gameObject.GetComponent<Door>())
+        {
+            isNearDoor = true;
+            currentDoor = collision.gameObject.GetComponent<Door>();
         }
     }
 
@@ -147,6 +160,10 @@ public class Player : MonoBehaviour
         if (collision.gameObject.GetComponent<Ladder>())
         {
             isOnLadder = false;
+        }
+        else if (collision.gameObject.GetComponent<Door>())
+        {
+            isNearDoor = false;
         }
     }
 
