@@ -36,7 +36,6 @@ public class Enemy : MonoBehaviour, IPoolable
     [SerializeField]
     float randomMovementInterval = 0.25f;
 
-    [SerializeField]
     float randomMovementRange = 1f;
 
 
@@ -63,6 +62,7 @@ public class Enemy : MonoBehaviour, IPoolable
         healthBar.localScale = Vector3.one;
         startTime = Time.time;
     }
+
 
     // Update is called once per frame
     void Update()
@@ -100,7 +100,11 @@ public class Enemy : MonoBehaviour, IPoolable
 
                 }
             }
-         
+            else
+            {
+                rigidbody.velocity = Vector2.zero;
+            }
+
 
             if (Time.time - lastShot > shootInterval)
             {

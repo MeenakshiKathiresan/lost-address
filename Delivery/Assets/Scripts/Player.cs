@@ -47,6 +47,9 @@ public class Player : MonoBehaviour
 
     float currentHealth = 100;
 
+    bool enemyContact = false;
+    Vector2 enemypos;
+
     float CurrentHealth
     {
         get { return currentHealth; }
@@ -130,8 +133,21 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (isGrounded || !isOnLadder)
+        if (isGrounded || !isOnLadder && !enemyContact)
+        {
             rigidbody.velocity = new Vector2(xMovement * speed, rigidbody.velocity.y);
+        }
+
+        if (enemyContact)
+        {
+            float playerToEnemy = transform.position.x - enemypos.x;
+
+            // avoid pushing enemies
+            // enemy in the left and trying to move left or enemy in the right and trying to move right
+            if ((playerToEnemy > 0 && xMovement < 0) || (playerToEnemy < 0 && xMovement > 0))
+
+                rigidbody.velocity = Vector2.zero;
+        }
 
     }
 
@@ -178,6 +194,11 @@ public class Player : MonoBehaviour
         {
             isGrounded = true;
         }
+        else if (collision.gameObject.GetComponent<Enemy>())
+        {
+            enemyContact = true;
+            enemypos = collision.transform.position;
+        }
 
 
     }
@@ -187,6 +208,10 @@ public class Player : MonoBehaviour
         if (collision.gameObject.GetComponentInParent<Floor>())
         {
             isGrounded = false;
+        }
+        else if (collision.gameObject.GetComponent<Enemy>())
+        {
+            enemyContact = false;
         }
     }
 
@@ -203,7 +228,7 @@ public class Player : MonoBehaviour
             isNearDoor = true;
             currentDoor = collision.gameObject.GetComponent<Door>();
         }
-        
+    
     }
 
     private void OnTriggerExit2D(Collider2D collision)

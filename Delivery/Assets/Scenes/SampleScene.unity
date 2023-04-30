@@ -3385,6 +3385,10 @@ PrefabInstance:
       propertyPath: bulletsParent
       value: 
       objectReference: {fileID: 1874137860}
+    - target: {fileID: 7897003065596389626, guid: ecf6bff0f0fe64afb91bde0b22a86f1e, type: 3}
+      propertyPath: m_Mass
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7897003065596389628, guid: ecf6bff0f0fe64afb91bde0b22a86f1e, type: 3}
       propertyPath: m_RootOrder
       value: 3
