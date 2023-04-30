@@ -41,7 +41,7 @@ public class Enemy : MonoBehaviour, IPoolable
 
 
     [SerializeField]
-    float followDistance = 5f;
+    public float maxFollowDistance = 8f;
 
 
     float lastDirectionChange = 0;
@@ -51,69 +51,70 @@ public class Enemy : MonoBehaviour, IPoolable
 
     Rigidbody2D rigidbody;
 
+    float startTime;
+    [SerializeField]
+    float startStallTime = 1;
+
     // Start is called before the first frame update
     void OnEnable()
-    {
+    {    
         rigidbody = GetComponent<Rigidbody2D>();
         health = totalHealth;
         healthBar.localScale = Vector3.one;
+        startTime = Time.time;
     }
 
     // Update is called once per frame
     void Update()
     {
-        Vector2 playerPosition = GameManager.instance.player.GetPlayerPosition();
-        float distanceToPlayer = Vector2.Distance(transform.position, playerPosition);
-        if (distanceToPlayer > damageDistance)
+        if (Time.time - startTime > startStallTime)
         {
-            if (distanceToPlayer <= followDistance)
+            Vector2 playerPosition = GameManager.instance.player.GetPlayerPosition();
+            float distanceToPlayer = Vector2.Distance(transform.position, playerPosition);
+            if (distanceToPlayer > damageDistance)
             {
-                //TODO if enemy in same level - add check
-                Vector2 moveDirection = playerPosition - (Vector2)transform.position;
-                rigidbody.velocity = moveDirection.normalized * enemySpeed;
-            }
-            else
-            {
-
-                if (Time.time - lastDirectionChange > randomMovementInterval)
+                if (distanceToPlayer <= maxFollowDistance)
                 {
-                    lastDirectionChange = Time.time;
-                    RaycastHit2D hit = Physics2D.Raycast(transform.position, rigidbody.velocity.normalized, raycastDistance);
-                    if (hit.collider != null && hit.collider.GetComponent<Floor>())
-                    {
-                        Vector2 newDirection = Vector2.Reflect(rigidbody.velocity.normalized, hit.normal);
-                        rigidbody.velocity = newDirection.normalized * enemySpeed;
-                    }
-                    else
-                    {
-                        Vector2 randomDirection = new Vector2(Random.Range(-randomMovementRange, randomMovementRange), Random.Range(-randomMovementRange, randomMovementRange));
-                        rigidbody.velocity = randomDirection.normalized * enemySpeed;
-                    }
+                    //TODO if enemy in same level - add check
+                    Vector2 moveDirection = playerPosition - (Vector2)transform.position;
+                    rigidbody.velocity = moveDirection.normalized * enemySpeed;
                 }
-
-
-
-                if (Time.time - lastDirectionChange > randomMovementInterval)
+                else
                 {
-                    lastDirectionChange = Time.time;
-                    Vector2 randomDirection = new Vector2(Random.Range(-randomMovementRange, randomMovementRange), Random.Range(-randomMovementRange, randomMovementRange));
-                    rigidbody.velocity = randomDirection.normalized * enemySpeed;
+
+                    if (Time.time - lastDirectionChange > randomMovementInterval)
+                    {
+                        lastDirectionChange = Time.time;
+                        RaycastHit2D hit = Physics2D.Raycast(transform.position, rigidbody.velocity.normalized, raycastDistance);
+                        if (hit.collider != null && hit.collider.GetComponent<Floor>())
+                        {
+                            Vector2 newDirection = Vector2.Reflect(rigidbody.velocity.normalized, hit.normal);
+                            rigidbody.velocity = newDirection.normalized * enemySpeed;
+                        }
+                        else
+                        {
+                            Vector2 randomDirection = new Vector2(Random.Range(-randomMovementRange, randomMovementRange), Random.Range(-randomMovementRange, randomMovementRange));
+                            rigidbody.velocity = randomDirection.normalized * enemySpeed;
+                        }
+                    }
+
+                }
+            }
+         
+
+            if (Time.time - lastShot > shootInterval)
+            {
+                lastShot = Time.time;
+
+                if (distanceToPlayer < damageDistance)
+                {
+                    GameManager.instance.player.TakeDamage(damage);
                 }
             }
         }
-        //else
-        //{
-        //    rigidbody.velocity = Vector2.zero;
-        //}
-
-        if (Time.time - lastShot > shootInterval)
+        else
         {
-            lastShot = Time.time;
-            
-            if (distanceToPlayer < damageDistance)
-            {
-                GameManager.instance.player.TakeDamage(damage);
-            }
+            rigidbody.velocity = Vector2.zero;
         }
 
     }

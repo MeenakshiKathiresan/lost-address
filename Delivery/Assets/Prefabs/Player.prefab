@@ -308,7 +308,7 @@ MonoBehaviour:
   isOnLadder: 0
   healthFill: {fileID: 341797519}
   damage: 20
-  coolDownTime: 0.3
+  coolDownTime: 0.5
   attackRadius: 1
   totalHealth: 100
 --- !u!50 &7897003065596389626

@@ -327,15 +327,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d8ff5cc1b24344a694e78aba0809874, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shootInterval: 1
+  shootInterval: 1.25
   totalHealth: 100
   damage: 15
-  damageDistance: 2.5
+  damageDistance: 1.5
   healthBar: {fileID: 5274452138372378613}
-  enemySpeed: 3
+  enemySpeed: 3.5
   randomMovementInterval: 1
   randomMovementRange: 2
-  followDistance: 2
+  maxFollowDistance: 8
+  startStallTime: 1
 --- !u!50 &5125431129681365646
 Rigidbody2D:
   serializedVersion: 4
