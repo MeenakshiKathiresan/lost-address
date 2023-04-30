@@ -50,6 +50,15 @@ public class Player : MonoBehaviour
     bool enemyContact = false;
     Vector2 enemypos;
 
+    int currentFloor;
+
+    public int CurrentFloor
+    {
+        set { currentFloor = value; }
+        get { return currentFloor; }
+    }
+
+
     float CurrentHealth
     {
         get { return currentHealth; }
@@ -165,6 +174,12 @@ public class Player : MonoBehaviour
         }
     }
 
+    public int GetCurrentFloor()
+    {
+        Debug.Log(CurrentFloor);
+        return CurrentFloor;
+    }
+
     void Attack()
     {
         Vector2 forward = new Vector2(transform.position.x + moveDirection, transform.position.y);
@@ -193,6 +208,8 @@ public class Player : MonoBehaviour
         if (collision.gameObject.GetComponentInParent<Floor>())
         {
             isGrounded = true;
+            Floor floor = collision.gameObject.GetComponentInParent<Floor>();
+            CurrentFloor = floor.CurrentFloor;
         }
         else if (collision.gameObject.GetComponent<Enemy>())
         {
@@ -208,6 +225,7 @@ public class Player : MonoBehaviour
         if (collision.gameObject.GetComponentInParent<Floor>())
         {
             isGrounded = false;
+            
         }
         else if (collision.gameObject.GetComponent<Enemy>())
         {

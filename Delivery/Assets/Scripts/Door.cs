@@ -102,6 +102,7 @@ public class Door : MonoBehaviour
                 Vector2 pos = new Vector2(transform.position.x + (offsetEnemyDistance * count * dir), transform.position.y + 2);
                 enemy = (Enemy)PoolManager.Instantiate("enemy", pos, transform.rotation);
                 enemy.maxFollowDistance = (i + 1) / enemyCount * enemy.maxFollowDistance;
+                enemy.CurrentFloor = currentFloor;
             }
 
         }

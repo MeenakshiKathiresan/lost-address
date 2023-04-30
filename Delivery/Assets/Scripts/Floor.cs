@@ -4,6 +4,14 @@ using UnityEngine;
 
 public class Floor : MonoBehaviour
 {
+    int currentFloor;
+
+    public int CurrentFloor
+    {
+        set { currentFloor = value; }
+        get { return currentFloor; }
+    }
+
     [SerializeField]
     List<Door> doors = new List<Door>();
 

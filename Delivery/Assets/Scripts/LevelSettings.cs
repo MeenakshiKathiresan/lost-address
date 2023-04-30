@@ -27,6 +27,7 @@ public class LevelSettings : MonoBehaviour
         {
             for (int j = 0; j < floors[i].Doors.Count; j++)
             {
+                floors[i].CurrentFloor = i;
                 Door currentDoor = floors[i].Doors[j];
                 currentDoor.IsDestionation = false;
 

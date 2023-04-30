@@ -38,6 +38,15 @@ public class Enemy : MonoBehaviour, IPoolable
 
     float randomMovementRange = 1f;
 
+    int currentFloor;
+
+    public int CurrentFloor
+    {
+        set { currentFloor = value; }
+        get { return currentFloor; }
+    }
+
+
 
     [SerializeField]
     public float maxFollowDistance = 8f;
@@ -70,12 +79,14 @@ public class Enemy : MonoBehaviour, IPoolable
         if (Time.time - startTime > startStallTime)
         {
             Vector2 playerPosition = GameManager.instance.player.GetPlayerPosition();
+            int playerFloor = GameManager.instance.player.GetCurrentFloor();
             float distanceToPlayer = Vector2.Distance(transform.position, playerPosition);
+
+            // move only if away from player by atleast damage distance
             if (distanceToPlayer > damageDistance)
             {
-                if (distanceToPlayer <= maxFollowDistance)
+                if (distanceToPlayer <= maxFollowDistance && CurrentFloor == playerFloor)
                 {
-                    //TODO if enemy in same level - add check
                     Vector2 moveDirection = playerPosition - (Vector2)transform.position;
                     rigidbody.velocity = moveDirection.normalized * enemySpeed;
                 }
