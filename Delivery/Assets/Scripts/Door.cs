@@ -106,21 +106,9 @@ public class Door : MonoBehaviour
         }
         else if (hasEnemies && !doorOpened)
         {
-            Debug.Log(enemyCount);
-            int dir = 1;
-            for (int i = 0; i < enemyCount; i++)
-            {
-                // alternate positive and negative
-                if (i % 2 == 0) dir = -1;
-
-                int count = (int)(i + 1) / 2;
-
-                Vector2 pos = new Vector2(transform.position.x + (offsetEnemyDistance * count * dir), transform.position.y + 2);
-                enemy = (Enemy)PoolManager.Instantiate("enemy", pos, transform.rotation);
-                enemy.maxFollowDistance = (i + 1) / enemyCount * enemy.maxFollowDistance;
-                enemy.CurrentFloor = currentFloor;
-            }
-
+            Vector2 pos = new Vector2(transform.position.x, transform.position.y + 2);
+            enemy = (Enemy)PoolManager.Instantiate("enemy", pos, transform.rotation);
+            enemy.CurrentFloor = currentFloor;
         }
         else
         {

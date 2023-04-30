@@ -54,7 +54,9 @@ public class Enemy : MonoBehaviour, IPoolable
 
     float lastDirectionChange = 0;
 
-    float raycastDistance = 2f;
+
+    [SerializeField]
+    float bounceOnBoundsDistance = 2f;
 
 
     Rigidbody2D rigidbody;
@@ -91,6 +93,9 @@ public class Enemy : MonoBehaviour, IPoolable
         if (Time.time - startTime > startStallTime)
         {
             Vector2 playerPosition = GameManager.instance.player.GetPlayerPosition();
+
+            playerPosition.y += 1.5f;
+
             int playerFloor = GameManager.instance.player.GetCurrentFloor();
             bool inSameFloor = CurrentFloor == playerFloor;
 
@@ -101,8 +106,24 @@ public class Enemy : MonoBehaviour, IPoolable
             {
                 if (distanceToPlayer <= maxFollowDistance && inSameFloor)
                 {
+
                     Vector2 moveDirection = playerPosition - (Vector2)transform.position;
-                    rigidbody.velocity = moveDirection.normalized * enemySpeed;
+
+                    //Clamp y value
+                    //moveDirection.y = 0;
+
+                    RaycastHit2D hit = Physics2D.Raycast(transform.position, rigidbody.velocity.normalized, bounceOnBoundsDistance);
+
+                    if (hit.collider != null && hit.collider.GetComponent<Floor>() || hit.collider.GetComponent<Ladder>())
+                    {
+                        Debug.Log("Reflecting even when within following distance");
+                        Vector2 newDirection = Vector2.Reflect(rigidbody.velocity.normalized, hit.normal);
+                        rigidbody.velocity = newDirection.normalized * enemySpeed;
+                    }
+                    else
+                    {
+                        rigidbody.velocity = moveDirection.normalized * enemySpeed;
+                    }
                 }
                 else
                 {
@@ -110,8 +131,8 @@ public class Enemy : MonoBehaviour, IPoolable
                     if (Time.time - lastDirectionChange > randomMovementInterval)
                     {
                         lastDirectionChange = Time.time;
-                        RaycastHit2D hit = Physics2D.Raycast(transform.position, rigidbody.velocity.normalized, raycastDistance);
-                        if (hit.collider != null && hit.collider.GetComponent<Floor>())
+                        RaycastHit2D hit = Physics2D.Raycast(transform.position, rigidbody.velocity.normalized, bounceOnBoundsDistance);
+                        if (hit.collider != null && hit.collider.GetComponent<Floor>() || hit.collider.GetComponent<Ladder>())
                         {
                             Vector2 newDirection = Vector2.Reflect(rigidbody.velocity.normalized, hit.normal);
                             rigidbody.velocity = newDirection.normalized * enemySpeed;

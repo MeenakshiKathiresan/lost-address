@@ -159,7 +159,7 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (isGrounded || !isOnLadder && !enemyContact)
+        if (isGrounded || !isOnLadder)
         {
             rigidbody.velocity = new Vector2(xMovement * speed, rigidbody.velocity.y);
         }
@@ -172,7 +172,9 @@ public class Player : MonoBehaviour
             // enemy in the left and trying to move left or enemy in the right and trying to move right
             if ((playerToEnemy > 0 && xMovement < 0) || (playerToEnemy < 0 && xMovement > 0))
 
+            {
                 rigidbody.velocity = Vector2.zero;
+            }
         }
 
     }
