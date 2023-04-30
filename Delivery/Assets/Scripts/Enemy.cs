@@ -67,9 +67,21 @@ public class Enemy : MonoBehaviour, IPoolable
     void OnEnable()
     {    
         rigidbody = GetComponent<Rigidbody2D>();
+        
+        GameManager.OnGameStart += Reset;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.OnGameStart -= Reset;
+    }
+
+    void Reset()
+    {
         health = totalHealth;
         healthBar.localScale = Vector3.one;
         startTime = Time.time;
+        gameObject.SetActive(false);
     }
 
 
@@ -80,12 +92,14 @@ public class Enemy : MonoBehaviour, IPoolable
         {
             Vector2 playerPosition = GameManager.instance.player.GetPlayerPosition();
             int playerFloor = GameManager.instance.player.GetCurrentFloor();
+            bool inSameFloor = CurrentFloor == playerFloor;
+
             float distanceToPlayer = Vector2.Distance(transform.position, playerPosition);
 
             // move only if away from player by atleast damage distance
             if (distanceToPlayer > damageDistance)
             {
-                if (distanceToPlayer <= maxFollowDistance && CurrentFloor == playerFloor)
+                if (distanceToPlayer <= maxFollowDistance && inSameFloor)
                 {
                     Vector2 moveDirection = playerPosition - (Vector2)transform.position;
                     rigidbody.velocity = moveDirection.normalized * enemySpeed;
@@ -117,7 +131,7 @@ public class Enemy : MonoBehaviour, IPoolable
             }
 
 
-            if (Time.time - lastShot > shootInterval)
+            if (Time.time - lastShot > shootInterval && inSameFloor)
             {
                 lastShot = Time.time;
 

@@ -15,14 +15,23 @@ public class LevelSettings : MonoBehaviour
 
     public float doorWaitTime = 1f;
 
+    [SerializeField]
+    Transform playerStartPosition;
 
 
 
     public static LevelSettings instance;
 
-    // Start is called before the first frame update
-    void Start()
+    public Vector2 GetPlayerStartPos()
     {
+        return playerStartPosition.position;
+    }
+
+    void StartLevel()
+    {
+
+        destinationFloor = Random.Range(1, floors.Count);
+        destinationDoor = Random.Range(0, floors[0].Doors.Count);
         for (int i = 0; i < floors.Count; i++)
         {
             for (int j = 0; j < floors[i].Doors.Count; j++)
@@ -79,15 +88,11 @@ public class LevelSettings : MonoBehaviour
 
     private void OnEnable()
     {
-        if (instance == null)
-            instance = this;
-        else
-            Destroy(this);
-
-        destinationFloor = Random.Range(1, floors.Count);
-        destinationDoor = Random.Range(0, floors[0].Doors.Count);
+        GameManager.OnGameStart += StartLevel;
+        StartLevel();
 
     }
+
 
     void Update()
     {

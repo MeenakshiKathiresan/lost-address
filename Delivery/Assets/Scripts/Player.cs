@@ -70,7 +70,24 @@ public class Player : MonoBehaviour
 
     float ladderX;
 
+    private void OnEnable()
+    {
+        GameManager.OnGameStart += Reset;
+        
+    }
 
+
+    void Reset()
+    {
+        transform.position = GameManager.instance.GetPlayerStartPosition();
+        CurrentHealth = 100;
+        healthFill.localScale = Vector3.one;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.OnGameStart -= Reset;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -171,12 +188,12 @@ public class Player : MonoBehaviour
         if (CurrentHealth <= 0)
         {
             Debug.Log("gameover");
+            GameManager.instance.OnPlayerDead();
         }
     }
 
     public int GetCurrentFloor()
     {
-        Debug.Log(CurrentFloor);
         return CurrentFloor;
     }
 
@@ -270,3 +287,4 @@ public class Player : MonoBehaviour
     }
 
 }
+

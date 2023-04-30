@@ -4,10 +4,26 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField]
+    List<LevelSettings> levels = new List<LevelSettings>();
     public static GameManager instance;
 
     [SerializeField]
     public Player player;
+
+    int currentLevel = 0;
+
+    public int CurrentLevel
+    {
+        get
+        {
+            return currentLevel;
+        }
+        set
+        {
+            currentLevel = value;
+        }
+    }
 
     private void OnEnable()
     {
@@ -17,6 +33,12 @@ public class GameManager : MonoBehaviour
             Destroy(this);
 
     }
+
+    // update score on
+    // enemy destroyed
+    // collectibles
+    // delivered
+
 
     void Start()
     {
@@ -28,4 +50,49 @@ public class GameManager : MonoBehaviour
     {
         
     }
+
+    public void OnPlayerDead()
+    {
+        //if (OnGameOver != null)
+        //{
+        //    OnGameOver();
+        //}
+        // later make it on restart button click
+        RestartLevel();
+    }
+
+    void RestartLevel()
+    {
+        if (OnGameStart != null)
+        {
+            OnGameStart();
+        }
+    }
+
+
+    public LevelSettings GetCurrentLevel()
+    {
+        return levels[CurrentLevel];
+    }
+
+    public Vector2 GetPlayerStartPosition()
+    {
+        return levels[CurrentLevel].GetPlayerStartPos();
+    }
+
+    public void onPlayerReachedDestination()
+    {
+
+    }
+
+
+
+    public delegate void OnGameOverHandler();
+    public static event OnGameOverHandler OnGameOver;
+
+    public delegate void OnGameStartHandler();
+    public static event OnGameStartHandler OnGameStart;
+
+
 }
+

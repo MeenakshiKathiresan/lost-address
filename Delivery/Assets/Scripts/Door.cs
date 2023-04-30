@@ -9,6 +9,7 @@ public class Door : MonoBehaviour
     Civilian civilian;
     Enemy enemy;
 
+    [SerializeField]
     bool doorOpened = false;
 
     public Direction DoorDirection
@@ -71,13 +72,28 @@ public class Door : MonoBehaviour
 
     }
 
+
+
     private void OnEnable()
     {
         // TODO put level design and spawn min max of that
         // for now 1 or 2 or 3
+        GameManager.OnGameStart += Reset;
 
         enemyCount = Random.Range(1, 4);
         doorOpened = false;
+       // GameManager.OnGameStart += ResetGame;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.OnGameStart -= Reset;
+    }
+
+    private void Reset()
+    {
+        doorOpened = false;
+        enemyCount = Random.Range(1, 4);
     }
 
     public void OpenDoor()
@@ -137,7 +153,7 @@ public class Door : MonoBehaviour
 
     IEnumerator CloseDoor()
     {
-        yield return new WaitForSeconds(LevelSettings.instance.doorWaitTime);
+        yield return new WaitForSeconds(GameManager.instance.GetCurrentLevel().doorWaitTime);
         transform.localScale = Vector3.one;
 
         if (isDestination)
