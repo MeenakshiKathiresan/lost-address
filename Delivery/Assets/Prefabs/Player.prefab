@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 341797519}
   - component: {fileID: 341797520}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Healthbar fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93,7 +93,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1024488112}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: fireposition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -125,7 +125,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1075724497}
   - component: {fileID: 1075724498}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Healthbar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -213,7 +213,7 @@ GameObject:
   - component: {fileID: 2065584108432075244}
   - component: {fileID: 7897003065596389626}
   - component: {fileID: 7897003065596389629}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -307,9 +307,10 @@ MonoBehaviour:
   isGrounded: 0
   isOnLadder: 0
   healthFill: {fileID: 341797519}
-  damage: 20
+  fireTransform: {fileID: 0}
+  bulletString: bullet
+  bulletParent: {fileID: 0}
   coolDownTime: 0.5
-  attackRadius: 1
   totalHealth: 100
 --- !u!50 &7897003065596389626
 Rigidbody2D:
@@ -323,7 +324,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 45
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 2

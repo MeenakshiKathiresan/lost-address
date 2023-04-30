@@ -68,7 +68,7 @@ public class LevelSettings : MonoBehaviour
                 currentDoor.currentFloor = i;
                 currentDoor.currentDoor = j;
 
-                float spawnEnemyProbability = Random.Range(0f, 1f);
+                float spawnEnemyProbability = 1;//Random.Range(0f, 1f);
 
                 if (spawnEnemyProbability > 0.5f)
                 {

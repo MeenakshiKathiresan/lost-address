@@ -2,50 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour, IPoolable
+public class DroneEnemy : Enemy
 {
-    
-
-    float lastShot = 0;
-
-    [Header("Shoot Settings")]
-    [SerializeField]
-    float shootInterval = 1.5f;
 
     [SerializeField]
-    float totalHealth = 100;
-
-    float health = 100;
-
-
-    [SerializeField]
-    float damage = 10f;
-
-
-    [SerializeField]
-    float damageDistance = 1f;
-
-    [SerializeField]
-    Transform healthBar;
-
-
-    [Header("Movement Settings")]
-    [SerializeField]
-    float enemySpeed = 3f;
+    float damageDistance = 2f;
 
     [SerializeField]
     float randomMovementInterval = 0.25f;
 
     float randomMovementRange = 1f;
-
-    int currentFloor;
-
-    public int CurrentFloor
-    {
-        set { currentFloor = value; }
-        get { return currentFloor; }
-    }
-
 
 
     [SerializeField]
@@ -58,52 +24,26 @@ public class Enemy : MonoBehaviour, IPoolable
     [SerializeField]
     float bounceOnBoundsDistance = 2f;
 
-
-    Rigidbody2D rigidbody;
-
-    float startTime;
     [SerializeField]
     float startStallTime = 1;
 
-    // Start is called before the first frame update
-    void OnEnable()
-    {    
-        rigidbody = GetComponent<Rigidbody2D>();
-        
-        GameManager.OnGameStart += Reset;
-    }
-
-    private void OnDisable()
-    {
-        GameManager.OnGameStart -= Reset;
-    }
-
-    void Reset()
-    {
-        health = totalHealth;
-        healthBar.localScale = Vector3.one;
-        startTime = Time.time;
-        gameObject.SetActive(false);
-    }
-
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
+        // start moving after initial stall time
         if (Time.time - startTime > startStallTime)
         {
             Vector2 playerPosition = GameManager.instance.player.GetPlayerPosition();
-
             playerPosition.y += 1.5f;
+            float distanceToPlayer = Vector2.Distance(transform.position, playerPosition);
 
             int playerFloor = GameManager.instance.player.GetCurrentFloor();
             bool inSameFloor = CurrentFloor == playerFloor;
 
-            float distanceToPlayer = Vector2.Distance(transform.position, playerPosition);
-
-            // move only if away from player by atleast damage distance
             if (distanceToPlayer > damageDistance)
             {
+                // chase player if within follow distance and in same floor
                 if (distanceToPlayer <= maxFollowDistance && inSameFloor)
                 {
 
@@ -112,9 +52,12 @@ public class Enemy : MonoBehaviour, IPoolable
                     //Clamp y value
                     //moveDirection.y = 0;
 
-                    RaycastHit2D hit = Physics2D.Raycast(transform.position, rigidbody.velocity.normalized, bounceOnBoundsDistance);
+                    // reflect if going towards floor or ladder
+                    // include trigger layers
+                    RaycastHit2D hit = Physics2D.Raycast(transform.position, rigidbody.velocity.normalized, bounceOnBoundsDistance, Physics2D.DefaultRaycastLayers, 0, (int)QueryTriggerInteraction.Collide);
 
-                    if (hit.collider != null && hit.collider.GetComponent<Floor>() || hit.collider.GetComponent<Ladder>())
+
+                    if ((hit.collider != null && hit.collider.GetComponent<Floor>()) || (hit.collider != null  && hit.collider.GetComponent<Ladder>()))
                     {
                         Debug.Log("Reflecting even when within following distance");
                         Vector2 newDirection = Vector2.Reflect(rigidbody.velocity.normalized, hit.normal);
@@ -122,6 +65,7 @@ public class Enemy : MonoBehaviour, IPoolable
                     }
                     else
                     {
+                        //chase!
                         rigidbody.velocity = moveDirection.normalized * enemySpeed;
                     }
                 }
@@ -131,8 +75,10 @@ public class Enemy : MonoBehaviour, IPoolable
                     if (Time.time - lastDirectionChange > randomMovementInterval)
                     {
                         lastDirectionChange = Time.time;
-                        RaycastHit2D hit = Physics2D.Raycast(transform.position, rigidbody.velocity.normalized, bounceOnBoundsDistance);
-                        if (hit.collider != null && hit.collider.GetComponent<Floor>() || hit.collider.GetComponent<Ladder>())
+                        RaycastHit2D hit = Physics2D.Raycast(transform.position, rigidbody.velocity.normalized, bounceOnBoundsDistance, Physics2D.DefaultRaycastLayers, 0, (int)QueryTriggerInteraction.Collide);
+
+                        // reflect if going towards floor or ladder
+                        if ((hit.collider != null && hit.collider.GetComponent<Floor>()) || hit.collider.GetComponent<Ladder>())
                         {
                             Vector2 newDirection = Vector2.Reflect(rigidbody.velocity.normalized, hit.normal);
                             rigidbody.velocity = newDirection.normalized * enemySpeed;
@@ -158,58 +104,21 @@ public class Enemy : MonoBehaviour, IPoolable
 
                 if (distanceToPlayer < damageDistance)
                 {
+                    //TODO Put claw in player direction
+                    // Get player with collider overlap circle
                     GameManager.instance.player.TakeDamage(damage);
                 }
             }
         }
+
         else
         {
             rigidbody.velocity = Vector2.zero;
         }
 
-    }
-
-    public void TakeDamage(float damage)
-    {
-        health -= damage;
-        lastShot = Time.time - (shootInterval / 2);
-        rigidbody.velocity = Vector3.zero;
-
-        Vector3 scale = healthBar.localScale;
-        scale.x = health / totalHealth;
-        healthBar.localScale = scale;
-
-        if (health <= 0)
-        {
-            PoolDestroy();
-        }
-    }
-
-    public GameObject GetGameObject()
-    {
-        return gameObject;
-    }
-
-    public bool IsAlive()
-    {
-        return gameObject.activeSelf;
-    }
-
-    public void PoolDestroy()
-    {
-        gameObject.SetActive(false);
-    }
-
-    public void PoolInstantiate(Vector3 position, Quaternion rotation)
-    {
-        transform.position = position;
-        transform.rotation = rotation;
-        gameObject.SetActive(true);
-    }
-
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
         
     }
+  
+
+
 }

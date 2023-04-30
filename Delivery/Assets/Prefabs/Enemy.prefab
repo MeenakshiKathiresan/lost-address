@@ -211,8 +211,8 @@ GameObject:
   - component: {fileID: 7897003065596389628}
   - component: {fileID: 7897003065596389631}
   - component: {fileID: 7897003065596389629}
-  - component: {fileID: 1896910587990892427}
   - component: {fileID: 5125431129681365646}
+  - component: {fileID: 4975284688148120495}
   m_Layer: 6
   m_Name: Enemy
   m_TagString: Untagged
@@ -315,28 +315,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.946576, y: 1.0119256}
   m_EdgeRadius: 0
---- !u!114 &1896910587990892427
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7897003065596389630}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d8ff5cc1b24344a694e78aba0809874, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shootInterval: 2
-  totalHealth: 100
-  damage: 15
-  damageDistance: 2.5
-  healthBar: {fileID: 5274452138372378613}
-  enemySpeed: 3.5
-  randomMovementInterval: 2
-  maxFollowDistance: 8
-  bounceOnBoundsDistance: 3
-  startStallTime: 1
 --- !u!50 &5125431129681365646
 Rigidbody2D:
   serializedVersion: 4
@@ -358,3 +336,25 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &4975284688148120495
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7897003065596389630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06dc444d0c88b4af7ac38367f3aaa514, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shootInterval: 2
+  totalHealth: 100
+  damage: 15
+  healthBar: {fileID: 5274452138372378613}
+  enemySpeed: 3
+  damageDistance: 2.5
+  randomMovementInterval: 0.25
+  maxFollowDistance: 8
+  bounceOnBoundsDistance: 5
+  startStallTime: 1

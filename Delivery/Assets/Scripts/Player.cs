@@ -32,15 +32,18 @@ public class Player : MonoBehaviour
     [Header("Shooting Settings")]
 
     [SerializeField]
-    float damage = 20f;
+    Transform fireTransform;
+
+    [SerializeField]
+    string bulletString = "bullet";
+
+    [SerializeField]
+    Transform bulletParent;
 
     [SerializeField]
     float coolDownTime = 1f;
 
     float lastAttackTime = 0;
-
-    [SerializeField]
-    float attackRadius = 1f;
 
     [SerializeField]
     float totalHealth = 100;
@@ -73,7 +76,7 @@ public class Player : MonoBehaviour
     private void OnEnable()
     {
         GameManager.OnGameStart += Reset;
-        
+
     }
 
 
@@ -107,7 +110,7 @@ public class Player : MonoBehaviour
         if (Time.time - lastAttackTime > coolDownTime && Input.GetKeyDown(KeyCode.F))
         {
             lastAttackTime = Time.time;
-            Attack();
+            Fire();
         }
 
         if (Input.GetKeyDown(KeyCode.Space) && isNearDoor)
@@ -199,28 +202,13 @@ public class Player : MonoBehaviour
         return CurrentFloor;
     }
 
-    void Attack()
+    void Fire()
     {
-        Vector2 forward = new Vector2(transform.position.x + moveDirection, transform.position.y);
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(forward, attackRadius);
-
-        foreach (Collider2D collider in colliders)
-        {
-            if (collider.GetComponent<Enemy>())
-            {
-                Enemy enemy = collider.GetComponent<Enemy>();
-                enemy.TakeDamage(damage);
-                     
-            }
-        }
+        Bullet bullet = (Bullet)PoolManager.Instantiate(bulletString, fireTransform.position, fireTransform.rotation);
+        bullet.transform.SetParent(bulletParent);
+        bullet.SetDirection(moveDirection);
     }
 
-    private void OnDrawGizmos()
-    {
-        Vector2 forward = new Vector2(transform.position.x + moveDirection, transform.position.y);
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(forward, attackRadius);
-    }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -236,6 +224,12 @@ public class Player : MonoBehaviour
             enemypos = collision.transform.position;
         }
 
+        else if (collision.gameObject.GetComponent<Bullet>()){
+            Bullet bullet = collision.gameObject.GetComponent<Bullet>();
+            TakeDamage(bullet.Damage);
+            bullet.PoolDestroy();
+        }
+
 
     }
 
@@ -244,7 +238,7 @@ public class Player : MonoBehaviour
         if (collision.gameObject.GetComponentInParent<Floor>())
         {
             isGrounded = false;
-            
+
         }
         else if (collision.gameObject.GetComponent<Enemy>())
         {
@@ -265,7 +259,7 @@ public class Player : MonoBehaviour
             isNearDoor = true;
             currentDoor = collision.gameObject.GetComponent<Door>();
         }
-    
+
     }
 
     private void OnTriggerExit2D(Collider2D collision)
