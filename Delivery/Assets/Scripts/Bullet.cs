@@ -12,6 +12,8 @@ public class Bullet : MonoBehaviour, IPoolable
     [SerializeField]
     float gameBounds = 25f;
     int xDirection = 1;
+
+    Vector2 direction;
     Rigidbody2D rigidbody;
 
 
@@ -41,8 +43,8 @@ public class Bullet : MonoBehaviour, IPoolable
     }
     public void SetDirection(int xDirection)
     {
-        Vector2 direction = new Vector2(xDirection, 0);
-        rigidbody.velocity = direction * speed;
+         direction = new Vector2(xDirection, 0);
+        
     }
     // Start is called before the first frame update
     void Start()
@@ -57,6 +59,7 @@ public class Bullet : MonoBehaviour, IPoolable
         {
             PoolDestroy();
         }
+        rigidbody.velocity = direction * speed;
     }
 }
 public enum BulletType { Player, Enemy }

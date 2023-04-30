@@ -51,7 +51,8 @@ public class Player : MonoBehaviour
     float currentHealth = 100;
 
     bool enemyContact = false;
-    Vector2 enemypos;
+
+    Enemy enemyInContact;
 
     int currentFloor;
 
@@ -107,11 +108,7 @@ public class Player : MonoBehaviour
         bool jumpKeyUp = Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.W);
 
 
-        if (Time.time - lastAttackTime > coolDownTime && Input.GetKeyDown(KeyCode.F))
-        {
-            lastAttackTime = Time.time;
-            Fire();
-        }
+        
 
         if (Input.GetKeyDown(KeyCode.Space) && isNearDoor)
         {
@@ -153,6 +150,12 @@ public class Player : MonoBehaviour
             flip();
         }
 
+        if (Time.time - lastAttackTime > coolDownTime && Input.GetKeyDown(KeyCode.F))
+        {
+            lastAttackTime = Time.time;
+            Fire();
+        }
+
     }
 
     public Vector3 GetPlayerPosition()
@@ -167,9 +170,9 @@ public class Player : MonoBehaviour
             rigidbody.velocity = new Vector2(xMovement * speed, rigidbody.velocity.y);
         }
 
-        if (enemyContact)
+        if (enemyContact && enemyInContact.gameObject.activeInHierarchy)
         {
-            float playerToEnemy = transform.position.x - enemypos.x;
+            float playerToEnemy = transform.position.x - enemyInContact.transform.position.x;
 
             // avoid pushing enemies
             // enemy in the left and trying to move left or enemy in the right and trying to move right
@@ -221,7 +224,8 @@ public class Player : MonoBehaviour
         else if (collision.gameObject.GetComponent<Enemy>())
         {
             enemyContact = true;
-            enemypos = collision.transform.position;
+            enemyInContact = collision.gameObject.GetComponent<Enemy>();
+            
         }
 
         else if (collision.gameObject.GetComponent<Bullet>()){
