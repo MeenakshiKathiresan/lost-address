@@ -13,6 +13,8 @@ public class Door : MonoBehaviour
     [SerializeField]
     bool doorOpened = false;
 
+    SpriteRenderer sprite;
+
     public Direction DoorDirection
     {
         get
@@ -72,11 +74,14 @@ public class Door : MonoBehaviour
     {
 
     }
-
+    
 
 
     private void OnEnable()
     {
+        sprite = GetComponentInChildren<SpriteRenderer>();
+        DisableDoor();
+
         // TODO put level design and spawn min max of that
         // for now 1 or 2 or 3
         GameManager.OnGameStart += Reset;
@@ -108,7 +113,7 @@ public class Door : MonoBehaviour
         }
         else if (hasEnemies && !doorOpened)
         {
-            Vector2 pos = new Vector2(transform.position.x, transform.position.y + 2);
+            Vector2 pos = new Vector2(transform.position.x, transform.position.y + 1);
             enemy = (Enemy)PoolManager.Instantiate("enemy", pos, transform.rotation);
             enemy.CurrentFloor = currentFloor;
         }
@@ -140,12 +145,21 @@ public class Door : MonoBehaviour
         doorOpened = true;
     }
 
+    public void EnableDoor()
+    {
+        sprite.DOColor(new Color(255, 255, 255, 1), 0.3f);
+    }
+
+    public void DisableDoor()
+    {
+        sprite.DOColor(new Color(255, 255, 255, 0.25f), 0.3f);
+    }
 
     IEnumerator CloseDoor()
     {
         yield return new WaitForSeconds(GameManager.instance.GetCurrentLevel().doorWaitTime);
 
-        transform.DOScaleX(1, 0.5f);
+        transform.DOScaleX(1, 0.2f);
         //transform.localScale = Vector3.one;
 
         if (isDestination)

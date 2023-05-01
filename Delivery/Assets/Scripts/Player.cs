@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class Player : MonoBehaviour
 {
     [SerializeField]
@@ -42,6 +43,9 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     float coolDownTime = 1f;
+
+    [SerializeField]
+    float damageOnHittingEnemyFromBelow = 30;
 
     float lastAttackTime = 0;
 
@@ -129,12 +133,10 @@ public class Player : MonoBehaviour
             //currentPosition.x = ladderX;
             //transform.position = currentPosition;
 
-            animatorController.SetTrigger("jumping");
         }
 
-        if(rigidbody.velocity.y > 0)
+        if(rigidbody.velocity.y > 0.5f)
         {
-
             animatorController.SetBool("jumping", true);
         }
         else
@@ -189,9 +191,8 @@ public class Player : MonoBehaviour
 
         }
 
-        if (rigidbody.velocity.x != 0 && isGrounded)
+        if (Mathf.Abs(rigidbody.velocity.x) > 0f && isGrounded)
         {
-
             animatorController.SetBool("running", true);
         }
         else
@@ -217,7 +218,10 @@ public class Player : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
+
         CurrentHealth -= damage;
+
+        Debug.Log(damage + " " + currentHealth);
 
         Vector3 scale = healthFill.localScale;
         scale.x = CurrentHealth / totalHealth;
@@ -255,8 +259,22 @@ public class Player : MonoBehaviour
         {
             enemyContact = true;
             enemyInContact = collision.gameObject.GetComponent<Enemy>();
-            
+
+            bool hitOnce = false;
+
+            foreach (ContactPoint2D contact in collision.contacts)
+            {
+                if (contact.normal.y < 0f && !hitOnce)
+                {
+                    hitOnce = true;
+                    TakeDamage(damageOnHittingEnemyFromBelow);
+                    Debug.Log(CurrentHealth);
+                }
+            }
         }
+
+
+     
 
         else if (collision.gameObject.GetComponent<Bullet>()){
             Bullet bullet = collision.gameObject.GetComponent<Bullet>();
@@ -292,6 +310,8 @@ public class Player : MonoBehaviour
         {
             isNearDoor = true;
             currentDoor = collision.gameObject.GetComponent<Door>();
+            //current door call enable
+            currentDoor.EnableDoor();
         }
 
     }
@@ -305,6 +325,9 @@ public class Player : MonoBehaviour
         else if (collision.gameObject.GetComponent<Door>())
         {
             isNearDoor = false;
+            currentDoor = collision.gameObject.GetComponent<Door>();
+            // current door call disable
+            currentDoor.DisableDoor();
         }
     }
 

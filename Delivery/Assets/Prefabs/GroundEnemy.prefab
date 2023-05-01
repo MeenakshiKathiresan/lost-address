@@ -155,7 +155,7 @@ MonoBehaviour:
   healthBar: {fileID: 3285842463386581408}
   enemySpeed: 4
   moveRange: 4
-  shootingRange: 12
+  shootingRange: 8
   shootingDistanceFromPlayer: 5
   bulletString: bulletEnemy
   fireTransform: {fileID: 7253951040370861285}

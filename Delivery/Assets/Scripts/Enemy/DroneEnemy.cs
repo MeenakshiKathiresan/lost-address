@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
+
 
 public class DroneEnemy : Enemy
 {
@@ -30,6 +32,9 @@ public class DroneEnemy : Enemy
     [SerializeField]
     ParticleSystem onAttack;
 
+    [SerializeField]
+    Transform spriteTransform;
+
 
     // Update is called once per frame
     void FixedUpdate()
@@ -38,7 +43,6 @@ public class DroneEnemy : Enemy
         if (Time.time - startTime > startStallTime)
         {
             Vector2 playerPosition = GameManager.instance.player.GetPlayerPosition();
-            playerPosition.y += 1.5f;
             float distanceToPlayer = Vector2.Distance(transform.position, playerPosition);
 
             int playerFloor = GameManager.instance.player.GetCurrentFloor();
@@ -114,6 +118,10 @@ public class DroneEnemy : Enemy
                     // Get player with collider overlap circle
                     GameManager.instance.player.TakeDamage(damage);
                     onAttack.Play();
+
+                    Vector2 direction = (GameManager.instance.player.transform.position - spriteTransform.transform.position).normalized;
+
+                    spriteTransform.DOLocalMove(direction, 0.2f).SetLoops(2, LoopType.Yoyo);
                 }
             }
         }

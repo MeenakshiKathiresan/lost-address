@@ -56,30 +56,30 @@
     <Analyzer Include="/Applications/Visual Studio.app/Contents/Resources/lib/monodevelop/AddIns/MonoDevelop.Unity/Analyzers/Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets/JMO Assets/Cartoon FX/Scripts/CFX_LightIntensityFade.cs" />
     <Compile Include="Assets/Scripts/Floor.cs" />
+    <Compile Include="Assets/JMO Assets/Cartoon FX/Scripts/CFX_AutoRotate.cs" />
     <Compile Include="Assets/Scripts/Ladder.cs" />
+    <Compile Include="Assets/JMO Assets/Cartoon FX/Demo/Assets/CFX_AutoStopLoopedEffect.cs" />
     <Compile Include="Assets/Scripts/Enemy/DroneEnemy.cs" />
     <Compile Include="Assets/Scripts/GameManager.cs" />
     <Compile Include="Assets/Scripts/Enemy/Enemy.cs" />
+    <Compile Include="Assets/JMO Assets/Cartoon FX/Demo/Assets/CFX_Demo_RandomDir.cs" />
     <Compile Include="Assets/Scripts/Door.cs" />
     <Compile Include="Assets/Scripts/Enemy/GroundEnemy.cs" />
+    <Compile Include="Assets/JMO Assets/Cartoon FX/Scripts/CFX_AutoDestructShuriken.cs" />
+    <Compile Include="Assets/JMO Assets/Cartoon FX/Demo/Assets/CFX_Demo_RotateCamera.cs" />
     <Compile Include="Assets/Scripts/Bullet.cs" />
     <Compile Include="Assets/Scripts/LevelSettings.cs" />
     <Compile Include="Assets/Scripts/Civilian.cs" />
+    <Compile Include="Assets/JMO Assets/Cartoon FX/Demo/Assets/CFX_Demo_RandomDirectionTranslate.cs" />
     <Compile Include="Assets/Scripts/Object Pooling/PoolManager.cs" />
     <Compile Include="Assets/Scripts/Player.cs" />
+    <Compile Include="Assets/JMO Assets/Cartoon FX/Demo/Assets/CFX_Demo_Translate.cs" />
+    <Compile Include="Assets/JMO Assets/Cartoon FX/Demo/Assets/CFX_Demo_New.cs" />
+    <Compile Include="Assets/JMO Assets/Cartoon FX/Scripts/CFX_LightFlicker.cs" />
     <Compile Include="Assets/Scripts/CameraFollow.cs" />
     <Compile Include="Assets/Scripts/Object Pooling/IPoolable.cs" />
-    <Compile Include="Assets/JMO Assets/Cartoon FX/Demo/Assets/CFX_Demo_Translate.cs" />
-    <Compile Include="Assets/JMO Assets/Cartoon FX/Scripts/CFX_AutoRotate.cs" />
-    <Compile Include="Assets/JMO Assets/Cartoon FX/Demo/Assets/CFX_Demo_New.cs" />
-    <Compile Include="Assets/JMO Assets/Cartoon FX/Demo/Assets/CFX_Demo_RandomDirectionTranslate.cs" />
-    <Compile Include="Assets/JMO Assets/Cartoon FX/Demo/Assets/CFX_AutoStopLoopedEffect.cs" />
-    <Compile Include="Assets/JMO Assets/Cartoon FX/Demo/Assets/CFX_Demo_RotateCamera.cs" />
-    <Compile Include="Assets/JMO Assets/Cartoon FX/Demo/Assets/CFX_Demo_RandomDir.cs" />
-    <Compile Include="Assets/JMO Assets/Cartoon FX/Scripts/CFX_LightFlicker.cs" />
-    <Compile Include="Assets/JMO Assets/Cartoon FX/Scripts/CFX_AutoDestructShuriken.cs" />
-    <Compile Include="Assets/JMO Assets/Cartoon FX/Scripts/CFX_LightIntensityFade.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets/JMO Assets/Cartoon FX/Shaders/CFX3 Multiply Color.shader" />
