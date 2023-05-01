@@ -66,7 +66,7 @@ public class Player : MonoBehaviour
     float CurrentHealth
     {
         get { return currentHealth; }
-        set { currentHealth = Mathf.Clamp(value, 0, 100); }
+        set { currentHealth = Mathf.Clamp(value, 0, totalHealth); }
     }
 
     Door currentDoor;
@@ -77,6 +77,7 @@ public class Player : MonoBehaviour
     private void OnEnable()
     {
         GameManager.OnGameStart += Reset;
+        Reset();
 
     }
 
@@ -84,7 +85,7 @@ public class Player : MonoBehaviour
     void Reset()
     {
         transform.position = GameManager.instance.GetPlayerStartPosition();
-        CurrentHealth = 100;
+        CurrentHealth = totalHealth;
         healthFill.localScale = Vector3.one;
     }
 

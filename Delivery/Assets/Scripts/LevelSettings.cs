@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class LevelSettings : MonoBehaviour
@@ -15,25 +16,85 @@ public class LevelSettings : MonoBehaviour
 
     public float doorWaitTime = 1f;
 
+    // should be withing 0 to total levels count
     [SerializeField]
-    Transform playerStartPosition;
+    int playerStartFloor = 2;
 
+    [SerializeField]
+    float playerStartX = -15f;
+
+    [SerializeField]
+    int minEnemiesPerFloor = 1;
+
+    // max - number of doors
+    [SerializeField]
+    int maxEnemiesPerFloor = 2;
+
+    // max - number of floors
+    [SerializeField]
+    int floorsWithGroundEnemiesCount = 3;
+
+    [SerializeField]
+    int avoidDestinationNearPlayerBy = 1;
+
+    [SerializeField]
+    float levelBounds = 20;
 
 
     public static LevelSettings instance;
 
     public Vector2 GetPlayerStartPos()
     {
-        return playerStartPosition.position;
+        Vector2 playerpos = new Vector2(playerStartX, floors[playerStartFloor].transform.position.y + 1f);
+        return playerpos;
     }
 
     void StartLevel()
     {
 
-        destinationFloor = Random.Range(1, floors.Count);
+        
+
+        if (Random.Range(0, 2) == 0) 
+        {
+            destinationFloor = Random.Range(playerStartFloor + avoidDestinationNearPlayerBy, floors.Count);
+        }
+        else 
+        {
+            destinationFloor = Random.Range(0, playerStartFloor - avoidDestinationNearPlayerBy);
+        }
+
+
+
         destinationDoor = Random.Range(0, floors[0].Doors.Count);
+
+        // random floors selected to spawn ground enemies
+        List<int> floorsWithGroundEnemies = GetRandomNumbersInRange(floorsWithGroundEnemiesCount, floors.Count - 1);
+
         for (int i = 0; i < floors.Count; i++)
         {
+            int enemyCount = Random.Range(minEnemiesPerFloor, maxEnemiesPerFloor + 1);
+
+            List<int> enemyPositions = GetRandomNumbersInRange(enemyCount, floors[0].Doors.Count - 1);
+
+            if (floorsWithGroundEnemies.Contains(i))
+            {
+                float posX;
+                //spawn ground enemy near ladder
+                if (floors[i].GetComponentInChildren<Ladder>())
+                {
+                    posX = floors[i].GetComponentInChildren<Ladder>().transform.position.x;
+                }
+                else
+                {
+                    float bound = levelBounds - 8;
+                    posX = Random.Range(-bound, bound);
+                }
+                float posY = floors[i].transform.position.y + 2;
+
+                GroundEnemy groundEnemy = (GroundEnemy)PoolManager.Instantiate("groundEnemy", new Vector2(posX, posY), transform.rotation);
+                groundEnemy.CurrentFloor = i;
+            }
+
             for (int j = 0; j < floors[i].Doors.Count; j++)
             {
                 floors[i].CurrentFloor = i;
@@ -68,9 +129,19 @@ public class LevelSettings : MonoBehaviour
                 currentDoor.currentFloor = i;
                 currentDoor.currentDoor = j;
 
-                float spawnEnemyProbability = 1;//Random.Range(0f, 1f);
+                
+                //float spawnEnemyProbability = 1;//Random.Range(0f, 1f);
 
-                if (spawnEnemyProbability > 0.5f)
+                //if (spawnEnemyProbability > 0.5f)
+                //{
+                //    currentDoor.HasEnemies = true;
+                //}
+                //else
+                //{
+                //    currentDoor.HasEnemies = false;
+                //}
+
+                if (enemyPositions.Contains(j))
                 {
                     currentDoor.HasEnemies = true;
                 }
@@ -85,6 +156,49 @@ public class LevelSettings : MonoBehaviour
         //set random doors as enemy doors later
         
     }
+
+    // per level enemy
+    List<int> GetEnemyPositions()
+    {
+        int enemyCount = Random.Range(minEnemiesPerFloor, maxEnemiesPerFloor + 1);
+
+        List<int> enemyPositions = new List<int>();
+        List<int> numbers = Enumerable.Range(0, floors[0].Doors.Count).ToList();
+
+
+        for (int i=0; i< enemyCount; i++)
+        {
+            int enemyIndex = Random.Range(0, numbers.Count);
+            Debug.Log(numbers[enemyIndex]);
+            enemyPositions.Add(numbers[enemyIndex]);
+            numbers.RemoveAt(enemyIndex);
+        }
+
+
+
+        return enemyPositions;
+    }
+
+    List<int> GetRandomNumbersInRange(int n, int total)
+    {
+        
+        List<int> randomNumbers = new List<int>();
+        List<int> numbers = Enumerable.Range(0, total).ToList();
+
+
+        for (int i = 0; i < n; i++)
+        {
+            int currentIndex = Random.Range(0, numbers.Count);
+            randomNumbers.Add(numbers[currentIndex]);
+            numbers.RemoveAt(currentIndex);
+        }
+
+
+        return randomNumbers;
+    }
+
+
+
 
     private void OnEnable()
     {

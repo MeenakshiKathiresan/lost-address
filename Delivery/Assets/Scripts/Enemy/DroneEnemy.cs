@@ -50,7 +50,8 @@ public class DroneEnemy : Enemy
                     Vector2 moveDirection = playerPosition - (Vector2)transform.position;
 
                     //Clamp y value
-                    //moveDirection.y = 0;
+                    moveDirection.y = 0;
+                    //moveDirection.y = Random.Range(-1.5f, 1.5f);
 
                     // reflect if going towards floor or ladder
                     // include trigger layers

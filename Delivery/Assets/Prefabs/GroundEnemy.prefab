@@ -148,13 +148,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 451eaf4d583be4f5888e5bc14d4349b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shootInterval: 1.5
+  shootInterval: 1.25
   totalHealth: 100
   damage: 10
   healthBar: {fileID: 3285842463386581408}
   enemySpeed: 4
-  moveRange: 5
-  shootingRange: 10
+  moveRange: 4
+  shootingRange: 12
   shootingDistanceFromPlayer: 5
   bulletString: bulletEnemy
   fireTransform: {fileID: 7253951040370861285}

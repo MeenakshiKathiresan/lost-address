@@ -1,18 +1,18 @@
 ﻿<Properties StartupConfiguration="{E6BE7586-4BF3-FD3A-E315-5DE40A760405}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Object Pooling/PoolManager.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Enemy/Enemy.cs">
     <Files>
-      <File FileName="Assets/Scripts/Player.cs" Line="185" Column="34" />
-      <File FileName="Assets/Scripts/Object Pooling/IPoolable.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Player.cs" Line="206" Column="28" />
+      <File FileName="Assets/Scripts/Object Pooling/IPoolable.cs" />
       <File FileName="Assets/Scripts/Floor.cs" Line="12" Column="37" />
-      <File FileName="Assets/Scripts/Door.cs" Line="110" Column="27" />
-      <File FileName="Assets/Scripts/LevelSettings.cs" Line="71" Column="49" />
-      <File FileName="Assets/Scripts/Civilian.cs" Line="26" Column="39" />
-      <File FileName="Assets/Scripts/GameManager.cs" Line="75" Column="37" />
-      <File FileName="Assets/Scripts/Enemy.cs" Line="31" Column="26" />
-      <File FileName="Assets/Scripts/Enemy/Enemy1.cs" Line="52" Column="24" />
-      <File FileName="Assets/Scripts/Enemy/DroneEnemy.cs" Line="41" Column="13" />
-      <File FileName="Assets/Scripts/Bullet.cs" Line="22" Column="1" />
-      <File FileName="Assets/Scripts/Object Pooling/PoolManager.cs" Line="25" Column="1" />
+      <File FileName="Assets/Scripts/Door.cs" Line="111" Column="13" />
+      <File FileName="Assets/Scripts/LevelSettings.cs" Line="63" Column="97" />
+      <File FileName="Assets/Scripts/Civilian.cs" />
+      <File FileName="Assets/Scripts/GameManager.cs" Line="78" Column="42" />
+      <File FileName="Assets/Scripts/Enemy/DroneEnemy.cs" Line="122" Column="1" />
+      <File FileName="Assets/Scripts/Bullet.cs" />
+      <File FileName="Assets/Scripts/Object Pooling/PoolManager.cs" />
+      <File FileName="Assets/Scripts/Enemy/GroundEnemy.cs" Line="121" Column="28" />
+      <File FileName="Assets/Scripts/Enemy/Enemy.cs" Line="73" Column="28" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -20,10 +20,10 @@
           <Node name="Delivery" expanded="True">
             <Node name="Assets" expanded="True">
               <Node name="Scripts" expanded="True">
-                <Node name="Enemy" expanded="True" />
-                <Node name="Object Pooling" expanded="True">
-                  <Node name="PoolManager.cs" selected="True" />
+                <Node name="Enemy" expanded="True">
+                  <Node name="Enemy.cs" selected="True" />
                 </Node>
+                <Node name="Object Pooling" expanded="True" />
               </Node>
             </Node>
           </Node>

@@ -36,8 +36,9 @@ public class GroundEnemy : Enemy
     // if in range move and shoot
 
 
-    int dir = 1;
+    int dir;
 
+    int defaultMovementdir = 1;
     // Update is called once per frame
     void FixedUpdate()
     {
@@ -45,7 +46,7 @@ public class GroundEnemy : Enemy
         int playerFloor = GameManager.instance.player.GetCurrentFloor();
         bool inSameFloor = CurrentFloor == playerFloor;
 
-        playerPosition = GameManager.instance.player.GetPlayerPosition();
+        playerPosition = GameManager.instance.player.transform.position;
         float playerDistance = Mathf.Abs(playerPosition.x - transform.position.x);
 
         if (playerDistance < shootingDistanceFromPlayer && inSameFloor)
@@ -58,12 +59,14 @@ public class GroundEnemy : Enemy
         else if (playerDistance < shootingRange && inSameFloor)
         {
 
-
-            if (playerPosition.x > transform.position.x)
+            if (playerPosition.x < transform.position.x)
+            {
                 dir = -1;
+            }
             else
+            {
                 dir = 1;
-
+            }
             rigidbody.velocity = new Vector2(dir * enemySpeed, rigidbody.velocity.y);
             CheckAndShoot();
 
@@ -75,12 +78,12 @@ public class GroundEnemy : Enemy
 
             if (Mathf.Abs(transform.position.x - startPos.x) > moveRange)
             {
-                enemySpeed *= -1;
+                defaultMovementdir *= -1;
                 startPos.x = transform.position.x;
 
               
             }
-            rigidbody.velocity = new Vector2(enemySpeed, rigidbody.velocity.y);
+            rigidbody.velocity = new Vector2(enemySpeed * defaultMovementdir, rigidbody.velocity.y);
 
         }
 
