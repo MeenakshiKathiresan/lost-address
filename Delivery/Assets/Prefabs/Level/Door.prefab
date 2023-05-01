@@ -411,5 +411,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   doorOpened: 0
+  doorBody: {fileID: 272103268245807730}
   currentFloor: 0
   currentDoor: 0

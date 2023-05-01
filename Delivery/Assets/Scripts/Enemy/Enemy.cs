@@ -44,6 +44,8 @@ public class Enemy : MonoBehaviour, IPoolable
     protected float lastShot = 0;
 
 
+
+
     protected void OnEnable()
     {
         rigidbody = GetComponent<Rigidbody2D>();

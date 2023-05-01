@@ -13,6 +13,9 @@ public class Door : MonoBehaviour
     [SerializeField]
     bool doorOpened = false;
 
+    [SerializeField]
+    Transform doorBody;
+
     SpriteRenderer sprite;
 
     public Direction DoorDirection
@@ -105,7 +108,8 @@ public class Door : MonoBehaviour
     public void OpenDoor()
     {
         
-        transform.DOScaleX(0, 0.5f);
+        doorBody.DOLocalMoveX(-3, 0.5f);
+
 
         if (isDestination)
         {
@@ -159,8 +163,8 @@ public class Door : MonoBehaviour
     {
         yield return new WaitForSeconds(GameManager.instance.GetCurrentLevel().doorWaitTime);
 
-        transform.DOScaleX(1, 0.2f);
-        //transform.localScale = Vector3.one;
+        doorBody.DOLocalMoveX(0, 0.2f);
+        //transform.localScale  Vector3.one;
 
         if (isDestination)
         {

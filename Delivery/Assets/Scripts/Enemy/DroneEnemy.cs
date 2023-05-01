@@ -35,6 +35,16 @@ public class DroneEnemy : Enemy
     [SerializeField]
     Transform spriteTransform;
 
+    SpriteRenderer[] sprites;
+
+    int spriteOrder = 2;
+
+    private void Start()
+    {
+        sprites = GetComponentsInChildren<SpriteRenderer>();
+        
+    }
+
 
 
     // Update is called once per frame
@@ -43,6 +53,11 @@ public class DroneEnemy : Enemy
         // start moving after initial stall time
         if (Time.time - startTime > startStallTime)
         {
+            if (spriteOrder <= 2)
+            {
+                SetSpritesSortingOrder(4);
+            }
+
             Vector2 playerPosition = GameManager.instance.player.GetPlayerPosition();
             float distanceToPlayer = Vector2.Distance(transform.position, playerPosition);
 
@@ -58,7 +73,6 @@ public class DroneEnemy : Enemy
                     Vector2 moveDirection = playerPosition - (Vector2)transform.position;
 
                     //Clamp y value
-                    moveDirection.y = 0;
                     //moveDirection.y = Random.Range(-1.5f, 1.5f);
 
                     // reflect if going towards floor or ladder
@@ -76,6 +90,8 @@ public class DroneEnemy : Enemy
                     else
                     {
                         //chase!
+
+                        moveDirection.y = 0;
                         rigidbody.velocity = moveDirection.normalized * enemySpeed;
                     }
                 }
@@ -97,6 +113,7 @@ public class DroneEnemy : Enemy
                         else
                         {
                             Vector2 randomDirection = new Vector2(Random.Range(-randomMovementRange, randomMovementRange),0);
+                            randomDirection.y = 0;
                             rigidbody.velocity = randomDirection.normalized * enemySpeed;
                         }
                     }
@@ -130,9 +147,23 @@ public class DroneEnemy : Enemy
         else
         {
             rigidbody.velocity = Vector2.zero;
+            SetSpritesSortingOrder(2);
         }
 
         
+    }
+
+
+    void SetSpritesSortingOrder(int order)
+    {
+        spriteOrder = order;
+        sprites[0].sortingOrder = order;
+
+
+        //for (int i = 0; i < sprites.Length; i++)
+        //{
+        //    sprites[i].sortingOrder = order;
+        //}
     }
   
 

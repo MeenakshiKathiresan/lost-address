@@ -56,6 +56,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     ParticleSystem onHit;
 
+
     float currentHealth = 100;
 
     bool enemyContact = false;
@@ -273,7 +274,6 @@ public class Player : MonoBehaviour
                 {
                     hitOnce = true;
                     TakeDamage(damageOnHittingEnemyFromBelow);
-                    Debug.Log(CurrentHealth);
                 }
             }
         }
@@ -321,6 +321,7 @@ public class Player : MonoBehaviour
 
     }
 
+
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject.GetComponent<Ladder>())
@@ -342,7 +343,24 @@ public class Player : MonoBehaviour
     {
         spriteDirection *= -1;
         transform.localScale = new Vector3(spriteDirection, 1, 1);
+
+        // work around for health bar! change later
+        if (moveDirection == -1)
+        {
+
+            Vector2 healthParentScale = healthFill.parent.localScale;
+            healthParentScale.x = -1;
+            healthFill.parent.localScale = healthParentScale;
+        }
+        else
+        {
+            Vector2 healthParentScale = healthFill.parent.localScale;
+            healthParentScale.x = 1;
+            healthFill.parent.localScale = healthParentScale;
+        }
     }
+
+
 
 }
 

@@ -148,5 +148,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 35
   bulletType: 1
-  damage: 10
+  damage: 15
   gameBounds: 25
