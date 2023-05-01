@@ -16,7 +16,7 @@ public class Door : MonoBehaviour
     [SerializeField]
     Transform doorBody;
 
-    SpriteRenderer sprite;
+    SpriteRenderer[] sprites;
 
     public Direction DoorDirection
     {
@@ -82,7 +82,7 @@ public class Door : MonoBehaviour
 
     private void OnEnable()
     {
-        sprite = GetComponentInChildren<SpriteRenderer>();
+        sprites = GetComponentsInChildren<SpriteRenderer>();
         DisableDoor();
 
         // TODO put level design and spawn min max of that
@@ -114,6 +114,9 @@ public class Door : MonoBehaviour
         if (isDestination)
         {
             //level up
+            civilian = (Civilian)PoolManager.Instantiate("civilian", transform.position, transform.rotation);
+            GameManager.instance.OnPlayerReachedDestination();
+
         }
         else if (hasEnemies && !doorOpened)
         {
@@ -151,12 +154,20 @@ public class Door : MonoBehaviour
 
     public void EnableDoor()
     {
-        sprite.DOColor(new Color(255, 255, 255, 1), 0.3f);
+        for(int i = 0; i < sprites.Length; i++)
+        {
+
+            sprites[i].DOColor(new Color(255, 255, 255, 1), 0.3f);
+        }
     }
 
     public void DisableDoor()
     {
-        sprite.DOColor(new Color(255, 255, 255, 0.25f), 0.3f);
+        for (int i = 0; i < sprites.Length; i++)
+        {
+
+            sprites[i].DOColor(new Color(255, 255, 255, 0.25f), 0.3f);
+        }
     }
 
     IEnumerator CloseDoor()

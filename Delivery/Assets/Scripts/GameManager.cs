@@ -80,9 +80,9 @@ public class GameManager : MonoBehaviour
         return levels[CurrentLevel].GetPlayerStartPos();
     }
 
-    public void onPlayerReachedDestination()
+    public void OnPlayerReachedDestination()
     {
-
+        OnWin();
     }
 
 
@@ -93,6 +93,11 @@ public class GameManager : MonoBehaviour
     public delegate void OnGameStartHandler();
     public static event OnGameStartHandler OnGameStart;
 
+    public delegate void OnWinHandler();
+    public static event OnWinHandler OnWin;
 
+    public enum GameStates {Menu, InGame, GameOver}
 }
+
+
 
