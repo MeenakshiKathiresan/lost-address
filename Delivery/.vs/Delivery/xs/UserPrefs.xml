@@ -1,5 +1,5 @@
 ﻿<Properties StartupConfiguration="{E6BE7586-4BF3-FD3A-E315-5DE40A760405}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Enemy/Enemy.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Enemy/GroundEnemy.cs">
     <Files>
       <File FileName="Assets/Scripts/Player.cs" Line="206" Column="28" />
       <File FileName="Assets/Scripts/Object Pooling/IPoolable.cs" />
@@ -8,10 +8,10 @@
       <File FileName="Assets/Scripts/LevelSettings.cs" Line="63" Column="97" />
       <File FileName="Assets/Scripts/Civilian.cs" />
       <File FileName="Assets/Scripts/GameManager.cs" Line="78" Column="42" />
-      <File FileName="Assets/Scripts/Enemy/DroneEnemy.cs" Line="122" Column="1" />
+      <File FileName="Assets/Scripts/Enemy/DroneEnemy.cs" Line="59" Column="1" />
       <File FileName="Assets/Scripts/Bullet.cs" />
       <File FileName="Assets/Scripts/Object Pooling/PoolManager.cs" />
-      <File FileName="Assets/Scripts/Enemy/GroundEnemy.cs" Line="121" Column="28" />
+      <File FileName="Assets/Scripts/Enemy/GroundEnemy.cs" Line="42" Column="6" />
       <File FileName="Assets/Scripts/Enemy/Enemy.cs" Line="73" Column="28" />
     </Files>
     <Pads>
@@ -21,7 +21,7 @@
             <Node name="Assets" expanded="True">
               <Node name="Scripts" expanded="True">
                 <Node name="Enemy" expanded="True">
-                  <Node name="Enemy.cs" selected="True" />
+                  <Node name="GroundEnemy.cs" selected="True" />
                 </Node>
                 <Node name="Object Pooling" expanded="True" />
               </Node>

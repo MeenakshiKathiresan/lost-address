@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class Door : MonoBehaviour
 {
@@ -98,7 +99,8 @@ public class Door : MonoBehaviour
 
     public void OpenDoor()
     {
-
+        
+        transform.DOScaleX(0, 0.5f);
 
         if (isDestination)
         {
@@ -133,7 +135,7 @@ public class Door : MonoBehaviour
 
         }
 
-        transform.localScale = Vector3.zero;
+        //transform.localScale = Vector3.zero;
         StartCoroutine(CloseDoor());
         doorOpened = true;
     }
@@ -142,7 +144,9 @@ public class Door : MonoBehaviour
     IEnumerator CloseDoor()
     {
         yield return new WaitForSeconds(GameManager.instance.GetCurrentLevel().doorWaitTime);
-        transform.localScale = Vector3.one;
+
+        transform.DOScaleX(1, 0.5f);
+        //transform.localScale = Vector3.one;
 
         if (isDestination)
         {

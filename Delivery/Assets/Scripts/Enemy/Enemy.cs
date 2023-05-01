@@ -81,6 +81,17 @@ public class Enemy : MonoBehaviour, IPoolable
                 bullet.PoolDestroy();
             }
         }
+
+        if (collision.gameObject.GetComponent<Player>())
+        {
+            foreach (ContactPoint2D contact in collision.contacts)
+            {
+                if (contact.normal.y < 0f)
+                {
+                    TakeDamage(currentHealth);
+                }
+            }
+        }
     }
 
     public void TakeDamage(float damage)

@@ -24,16 +24,22 @@ public class GroundEnemy : Enemy
     Vector2 startPos;
     Vector3 playerPosition;
 
+    //[SerializeField]
+    //float randomJumpTime = 1f;
+
+    //[SerializeField]
+    //float jumpPower = 5;
+
+    //float lastJump = 0;
+
+    [SerializeField]
+    Transform aboveCollider;
+
     private void Start()
     {
         startPos = transform.position;
+        //randomJumpTime = Random.Range(2, 4);
     }
-
-
-    // if in same floor, shoot
-    //int playerFloor = GameManager.instance.player.GetCurrentFloor();
-    //bool inSameFloor = CurrentFloor == playerFloor;
-    // if in range move and shoot
 
 
     int dir;
@@ -49,9 +55,23 @@ public class GroundEnemy : Enemy
         playerPosition = GameManager.instance.player.transform.position;
         float playerDistance = Mathf.Abs(playerPosition.x - transform.position.x);
 
+        // jump 
+        //if (Time.time - lastJump > randomJumpTime) 
+        //{
+        //    lastJump = Time.time;
+
+        //    RaycastHit2D hit = Physics2D.Raycast(aboveCollider.position, Vector2.up, 4);
+        //    if (hit.collider == null || !hit.collider.GetComponent<Enemy>())
+        //    {
+        //        rigidbody.velocity = new Vector2(rigidbody.velocity.x, jumpPower);
+        //        Debug.Log("jumps");
+        //    }
+        //}
+
+
         if (playerDistance < shootingDistanceFromPlayer && inSameFloor)
         {
-            rigidbody.velocity = Vector2.zero;
+            rigidbody.velocity = new Vector2(0, rigidbody.velocity.y);
 
             CheckAndShoot();
         }
@@ -115,21 +135,27 @@ public class GroundEnemy : Enemy
 
     }
 
-    protected override void OnCollisionEnter2D(Collision2D collision)
+    //protected override void OnCollisionEnter2D(Collision2D collision)
+    //{
+    //    base.OnCollisionEnter2D(collision);
+
+
+    //    if (collision.gameObject.GetComponent<Player>())
+    //    {
+    //        foreach (ContactPoint2D contact in collision.contacts)
+    //        {
+    //            if (contact.normal.y < 0f)
+    //            {
+    //                TakeDamage(currentHealth);
+    //            }
+    //        }
+    //    }
+    //}
+
+    private void OnDrawGizmos()
     {
-        base.OnCollisionEnter2D(collision);
-
-
-        if (collision.gameObject.GetComponent<Player>())
-        {
-            foreach (ContactPoint2D contact in collision.contacts)
-            {
-                if (contact.normal.y < 0f)
-                {
-                    TakeDamage(currentHealth);
-                }
-            }
-        }
+        Gizmos.color = Color.red;
+        Gizmos.DrawRay(transform.position, Vector2.up * 4);
     }
 
 }

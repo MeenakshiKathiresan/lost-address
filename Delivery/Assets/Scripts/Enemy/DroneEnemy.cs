@@ -62,6 +62,7 @@ public class DroneEnemy : Enemy
                     {
                         Debug.Log("Reflecting even when within following distance");
                         Vector2 newDirection = Vector2.Reflect(rigidbody.velocity.normalized, hit.normal);
+                        newDirection.y = 0;
                         rigidbody.velocity = newDirection.normalized * enemySpeed;
                     }
                     else
@@ -82,11 +83,12 @@ public class DroneEnemy : Enemy
                         if ((hit.collider != null && hit.collider.GetComponent<Floor>()) || hit.collider.GetComponent<Ladder>())
                         {
                             Vector2 newDirection = Vector2.Reflect(rigidbody.velocity.normalized, hit.normal);
+                            newDirection.y = 0;
                             rigidbody.velocity = newDirection.normalized * enemySpeed;
                         }
                         else
                         {
-                            Vector2 randomDirection = new Vector2(Random.Range(-randomMovementRange, randomMovementRange), Random.Range(-randomMovementRange, randomMovementRange));
+                            Vector2 randomDirection = new Vector2(Random.Range(-randomMovementRange, randomMovementRange),0);
                             rigidbody.velocity = randomDirection.normalized * enemySpeed;
                         }
                     }
