@@ -80,7 +80,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 5
   m_Sprite: {fileID: 21300000, guid: 55b78702525c845c59647227f1da6923, type: 3}
-  m_Color: {r: 0.41509432, g: 0.16642933, b: 0.16642933, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -159,8 +159,6 @@ MonoBehaviour:
   shootingDistanceFromPlayer: 5
   bulletString: bulletEnemy
   fireTransform: {fileID: 7253951040370861285}
-  randomJumpTime: 1
-  jumpPower: 5
   aboveCollider: {fileID: 866143980074300319}
 --- !u!1 &3087670521634595956
 GameObject:

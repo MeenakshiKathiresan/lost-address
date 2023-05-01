@@ -74,6 +74,9 @@ public class Player : MonoBehaviour
 
     float ladderX;
 
+    Animator animatorController;
+    
+
     private void OnEnable()
     {
         GameManager.OnGameStart += Reset;
@@ -98,6 +101,8 @@ public class Player : MonoBehaviour
     void Start()
     {
         rigidbody = GetComponent<Rigidbody2D>();
+        animatorController = GetComponent<Animator>();
+
     }
 
     // Update is called once per frame
@@ -123,6 +128,18 @@ public class Player : MonoBehaviour
             //Vector3 currentPosition = transform.position;
             //currentPosition.x = ladderX;
             //transform.position = currentPosition;
+
+            animatorController.SetTrigger("jumping");
+        }
+
+        if(rigidbody.velocity.y > 0)
+        {
+
+            animatorController.SetBool("jumping", true);
+        }
+        else
+        {
+            animatorController.SetBool("jumping", false);
         }
 
 
@@ -169,6 +186,18 @@ public class Player : MonoBehaviour
         if (isGrounded || !isOnLadder)
         {
             rigidbody.velocity = new Vector2(xMovement * speed, rigidbody.velocity.y);
+
+        }
+
+        if (rigidbody.velocity.x != 0 && isGrounded)
+        {
+
+            animatorController.SetBool("running", true);
+        }
+        else
+        {
+
+            animatorController.SetBool("running", false);
         }
 
         if (enemyContact && enemyInContact.gameObject.activeInHierarchy)

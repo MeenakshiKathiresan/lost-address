@@ -27,6 +27,9 @@ public class DroneEnemy : Enemy
     [SerializeField]
     float startStallTime = 1;
 
+    [SerializeField]
+    ParticleSystem onAttack;
+
 
     // Update is called once per frame
     void FixedUpdate()
@@ -110,6 +113,7 @@ public class DroneEnemy : Enemy
                     //TODO Put claw in player direction
                     // Get player with collider overlap circle
                     GameManager.instance.player.TakeDamage(damage);
+                    onAttack.Play();
                 }
             }
         }
