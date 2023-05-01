@@ -154,7 +154,7 @@ MonoBehaviour:
   damage: 10
   healthBar: {fileID: 3285842463386581408}
   enemySpeed: 4
-  moveRange: 4
+  moveRange: 8
   shootingRange: 8
   shootingDistanceFromPlayer: 5
   bulletString: bulletEnemy

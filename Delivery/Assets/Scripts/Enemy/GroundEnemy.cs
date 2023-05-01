@@ -24,6 +24,9 @@ public class GroundEnemy : Enemy
     Vector2 startPos;
     Vector3 playerPosition;
 
+    public float leftBound;
+    public float rightBound;
+
     //[SerializeField]
     //float randomJumpTime = 1f;
 
@@ -37,7 +40,10 @@ public class GroundEnemy : Enemy
 
     private void Start()
     {
+        // count as half done
         startPos = transform.position;
+        startPos.x -= moveRange / 2;
+
         //randomJumpTime = Random.Range(2, 4);
     }
 
@@ -76,6 +82,7 @@ public class GroundEnemy : Enemy
             CheckAndShoot();
         }
 
+        // 
         else if (playerDistance < shootingRange && inSameFloor)
         {
 
@@ -92,11 +99,14 @@ public class GroundEnemy : Enemy
 
 
         }
+
+        // move left and right
         else
         {
-           
+            bool outOfBounds = (transform.position.x > rightBound || transform.position.x < leftBound);
 
-            if (Mathf.Abs(transform.position.x - startPos.x) > moveRange)
+
+            if (Mathf.Abs(transform.position.x - startPos.x) > moveRange || outOfBounds)
             {
                 defaultMovementdir *= -1;
                 startPos.x = transform.position.x;
@@ -115,6 +125,13 @@ public class GroundEnemy : Enemy
 }
     void CheckAndShoot()
     {
+        bool outOfBounds = (transform.position.x > rightBound || transform.position.x < leftBound);
+
+        if (outOfBounds)
+        {
+            rigidbody.velocity = Vector2.zero;
+        }
+
         if (Time.time - lastShot > shootInterval)
         {
             lastShot = Time.time;

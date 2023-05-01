@@ -71,7 +71,7 @@ public class LevelSettings : MonoBehaviour
 
         // random floors selected to spawn ground enemies
       
-        List<int> floorsWithGroundEnemies = GetRandomNumbersInRange(floorsWithGroundEnemiesCount, floors.Count);
+        List<int> floorsWithGroundEnemies = GetRandomNumbersInRange(floorsWithGroundEnemiesCount, floors.Count, playerStartFloor);
 
         for (int i = 0; i < floors.Count; i++)
         {
@@ -83,12 +83,26 @@ public class LevelSettings : MonoBehaviour
             if (floorsWithGroundEnemies.Contains(i))
             {
                 float posX;
+                float leftBound = -levelBounds, rightBound = levelBounds;
+
+                float offset = 2;
+
                 //spawn ground enemy near ladder
-                //if (floors[i].GetComponentInChildren<Ladder>())
-                //{
-                //    posX = floors[i].GetComponentInChildren<Ladder>().transform.position.x;
-                //}
-                //else
+                if (i >0 && floors[i-1].GetComponentsInChildren<Ladder>().Length >1)
+                {
+                    Ladder[] ladders = floors[i - 1].GetComponentsInChildren<Ladder>();
+                    posX = (ladders[0].transform.position.x + ladders[1].transform.position.x)/2;
+                    //posX = floors[i].GetComponentInChildren<Ladder>().transform.position.x;
+
+                    leftBound = Mathf.Min(ladders[0].transform.position.x, ladders[1].transform.position.x);
+                    rightBound = Mathf.Max(ladders[0].transform.position.x, ladders[1].transform.position.x);
+
+                    leftBound += offset;
+                    rightBound -= offset;
+
+
+                }
+                else
                 {
                     float bound = levelBounds - 8;
                     posX = Random.Range(-bound, bound);
@@ -97,6 +111,9 @@ public class LevelSettings : MonoBehaviour
 
                 GroundEnemy groundEnemy = (GroundEnemy)PoolManager.Instantiate("groundEnemy", new Vector2(posX, posY), transform.rotation);
                 groundEnemy.CurrentFloor = i;
+                groundEnemy.leftBound = leftBound;
+                groundEnemy.rightBound = rightBound;
+
             }
 
             for (int j = 0; j < floors[i].Doors.Count; j++)
@@ -183,11 +200,16 @@ public class LevelSettings : MonoBehaviour
         return enemyPositions;
     }
 
-    List<int> GetRandomNumbersInRange(int n, int total)
+    List<int> GetRandomNumbersInRange(int n, int total , int exception = -1)
     {
         
         List<int> randomNumbers = new List<int>();
         List<int> numbers = Enumerable.Range(0, total).ToList();
+
+        if (numbers.Contains(exception) && numbers.Count > n)
+        {
+            numbers.Remove(exception);
+        }
 
         for (int i = 0; i < n; i++)
         {
