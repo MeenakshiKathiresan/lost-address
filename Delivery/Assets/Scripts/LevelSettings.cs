@@ -56,11 +56,13 @@ public class LevelSettings : MonoBehaviour
 
         if (Random.Range(0, 2) == 0) 
         {
-            destinationFloor = Random.Range(playerStartFloor + avoidDestinationNearPlayerBy, floors.Count);
+            int startIndex = Mathf.Clamp(playerStartFloor + avoidDestinationNearPlayerBy, 0, floors.Count - 1);
+            destinationFloor = Random.Range(startIndex, floors.Count);
         }
         else 
         {
-            destinationFloor = Random.Range(0, playerStartFloor - avoidDestinationNearPlayerBy);
+            int endIndex = Mathf.Clamp(playerStartFloor - avoidDestinationNearPlayerBy, 0, floors.Count - 1);
+            destinationFloor = Random.Range(0, endIndex);
         }
 
 
@@ -68,23 +70,25 @@ public class LevelSettings : MonoBehaviour
         destinationDoor = Random.Range(0, floors[0].Doors.Count);
 
         // random floors selected to spawn ground enemies
-        List<int> floorsWithGroundEnemies = GetRandomNumbersInRange(floorsWithGroundEnemiesCount, floors.Count - 1);
+      
+        List<int> floorsWithGroundEnemies = GetRandomNumbersInRange(floorsWithGroundEnemiesCount, floors.Count);
 
         for (int i = 0; i < floors.Count; i++)
         {
             int enemyCount = Random.Range(minEnemiesPerFloor, maxEnemiesPerFloor + 1);
 
-            List<int> enemyPositions = GetRandomNumbersInRange(enemyCount, floors[0].Doors.Count - 1);
+            List<int> enemyPositions = GetRandomNumbersInRange(enemyCount, floors[0].Doors.Count);
+
 
             if (floorsWithGroundEnemies.Contains(i))
             {
                 float posX;
                 //spawn ground enemy near ladder
-                if (floors[i].GetComponentInChildren<Ladder>())
-                {
-                    posX = floors[i].GetComponentInChildren<Ladder>().transform.position.x;
-                }
-                else
+                //if (floors[i].GetComponentInChildren<Ladder>())
+                //{
+                //    posX = floors[i].GetComponentInChildren<Ladder>().transform.position.x;
+                //}
+                //else
                 {
                     float bound = levelBounds - 8;
                     posX = Random.Range(-bound, bound);
@@ -184,7 +188,6 @@ public class LevelSettings : MonoBehaviour
         
         List<int> randomNumbers = new List<int>();
         List<int> numbers = Enumerable.Range(0, total).ToList();
-
 
         for (int i = 0; i < n; i++)
         {

@@ -52,6 +52,10 @@ public class Player : MonoBehaviour
     [SerializeField]
     float totalHealth = 100;
 
+
+    [SerializeField]
+    ParticleSystem onHit;
+
     float currentHealth = 100;
 
     bool enemyContact = false;
@@ -185,7 +189,7 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (isGrounded || !isOnLadder)
+        //if (isGrounded || !isOnLadder)
         {
             rigidbody.velocity = new Vector2(xMovement * speed, rigidbody.velocity.y);
 
@@ -221,15 +225,16 @@ public class Player : MonoBehaviour
 
         CurrentHealth -= damage;
 
-        Debug.Log(damage + " " + currentHealth);
+        onHit.Play();
 
         Vector3 scale = healthFill.localScale;
         scale.x = CurrentHealth / totalHealth;
         healthFill.localScale = scale;
 
+
+
         if (CurrentHealth <= 0)
         {
-            Debug.Log("gameover");
             GameManager.instance.OnPlayerDead();
         }
     }
