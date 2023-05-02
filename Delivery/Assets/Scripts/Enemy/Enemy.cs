@@ -46,7 +46,7 @@ public class Enemy : MonoBehaviour, IPoolable
 
 
 
-    protected void OnEnable()
+    protected virtual void OnEnable()
     {
         rigidbody = GetComponent<Rigidbody2D>();
         SetToDefault();

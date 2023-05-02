@@ -150,7 +150,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shootInterval: 1.25
-  totalHealth: 100
+  totalHealth: 50
   damage: 10
   healthBar: {fileID: 3285842463386581408}
   enemySpeed: 4

@@ -313,9 +313,10 @@ MonoBehaviour:
   bulletString: bullet
   bulletParent: {fileID: 0}
   coolDownTime: 0.5
-  damageOnHittingEnemyFromBelow: 30
+  damageOnHittingEnemyFromBelow: 20
   totalHealth: 100
   onHit: {fileID: 2065584107685585984}
+  isNearDoor: 0
 --- !u!50 &7897003065596389626
 Rigidbody2D:
   serializedVersion: 4

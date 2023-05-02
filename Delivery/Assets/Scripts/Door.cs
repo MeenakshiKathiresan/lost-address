@@ -120,7 +120,7 @@ public class Door : MonoBehaviour
         }
         else if (hasEnemies && !doorOpened)
         {
-            Vector2 pos = new Vector2(transform.position.x, transform.position.y + 1);
+            Vector2 pos = new Vector2(transform.position.x, transform.position.y);
             enemy = (Enemy)PoolManager.Instantiate("enemy", pos, transform.rotation);
             enemy.CurrentFloor = currentFloor;
         }
@@ -154,6 +154,7 @@ public class Door : MonoBehaviour
 
     public void EnableDoor()
     {
+
         for(int i = 0; i < sprites.Length; i++)
         {
 
@@ -163,11 +164,15 @@ public class Door : MonoBehaviour
 
     public void DisableDoor()
     {
-        for (int i = 0; i < sprites.Length; i++)
+        if (!doorOpened)
         {
+            for (int i = 0; i < sprites.Length; i++)
+            {
 
-            sprites[i].DOColor(new Color(255, 255, 255, 0.25f), 0.3f);
+                sprites[i].DOColor(new Color(255, 255, 255, 0.25f), 0.3f);
+            }
         }
+        
     }
 
     IEnumerator CloseDoor()
@@ -176,18 +181,9 @@ public class Door : MonoBehaviour
 
         doorBody.DOLocalMoveX(0, 0.2f);
         //transform.localScale  Vector3.one;
+        doorOpened = false;
+        DisableDoor();
 
-        if (isDestination)
-        {
-
-        }
-        else if (hasEnemies)
-        {
-
-        }
-        else
-        {
-            civilian.PoolDestroy();
-        }
+   
     }
 }

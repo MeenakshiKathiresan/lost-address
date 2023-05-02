@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
+
 
 public class CameraFollow : MonoBehaviour
 {
@@ -23,6 +25,13 @@ public class CameraFollow : MonoBehaviour
     float snapDistance = 0.25f; 
 
     private Vector3 velocity = Vector3.zero;
+
+    private void Start()
+    {
+        Camera mainCamera = GetComponent<Camera>();
+        mainCamera.fieldOfView = 120f; // Set a very small field of view to start the tween from.
+        mainCamera.DOFieldOfView(70, 0.5f);
+    }
 
     private void LateUpdate()
     {

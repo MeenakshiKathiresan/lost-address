@@ -8,6 +8,9 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     Transform winText;
 
+    [SerializeField]
+    Transform startScreen;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -16,17 +19,26 @@ public class UIManager : MonoBehaviour
 
     private void OnEnable()
     {
-        GameManager.OnWin += OnWin;
+        GameManager.OnGameStateChange += OnGameStateChange;
     }
 
     private void OnDisable()
     {
-        GameManager.OnWin -= OnWin;
+        GameManager.OnGameStateChange -= OnGameStateChange;
     }
 
-    void OnWin()
+    void OnGameStateChange(GameManager.GameState gameState)
     {
-        winText.DOScale(Vector3.one, 1).SetLoops(2, LoopType.Yoyo);
+
+        if (gameState == GameManager.GameState.GameOver)
+            winText.DOScale(Vector3.one, 1).SetLoops(2, LoopType.Yoyo).OnComplete(() => {
+                startScreen.gameObject.SetActive(true);
+            });
+
+        else if (gameState == GameManager.GameState.InGame)
+            startScreen.gameObject.SetActive(false);
+        else
+            startScreen.gameObject.SetActive(true);
     }
 
 

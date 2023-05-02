@@ -79,6 +79,7 @@ public class Player : MonoBehaviour
     }
 
     Door currentDoor;
+    [SerializeField]
     bool isNearDoor;
 
     float ladderX;
@@ -117,70 +118,72 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        xMovement = Input.GetAxis("Horizontal");
-
-        bool jumpKeyDown = Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.W);
-        bool jumpKeyUp = Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.W);
-
-
-        
-
-        if (Input.GetKeyDown(KeyCode.Space) && isNearDoor)
+        if (GameManager.instance.GetCurrentState() == GameManager.GameState.InGame)
         {
-            currentDoor.OpenDoor();
+            xMovement = Input.GetAxis("Horizontal");
+
+            bool jumpKeyDown = Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.W);
+            bool jumpKeyUp = Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.W);
+
+
+
+
+            if (Input.GetKeyDown(KeyCode.Space) && isNearDoor)
+            {
+                currentDoor.OpenDoor();
+            }
+
+
+            if (jumpKeyDown && isOnLadder)
+            {
+                rigidbody.velocity = new Vector2(0, climbSpeed);
+                //Vector3 currentPosition = transform.position;
+                //currentPosition.x = ladderX;
+                //transform.position = currentPosition;
+
+            }
+
+            if (rigidbody.velocity.y > 0.5f)
+            {
+                animatorController.SetBool("jumping", true);
+            }
+            else
+            {
+                animatorController.SetBool("jumping", false);
+            }
+
+
+            if (jumpKeyDown && isGrounded)
+            {
+                rigidbody.velocity = new Vector2(rigidbody.velocity.x, jumpPower);
+            }
+
+            if (jumpKeyUp && rigidbody.velocity.y > 0)
+            {
+                rigidbody.velocity = new Vector2(rigidbody.velocity.x, rigidbody.velocity.y * 0.5f);
+            }
+
+
+            if (xMovement > 0)
+            {
+                moveDirection = 1;
+            }
+            else if (xMovement < 0)
+            {
+                moveDirection = -1;
+            }
+
+            if (moveDirection != spriteDirection)
+            {
+                flip();
+            }
+
+            if (Time.time - lastAttackTime > coolDownTime && Input.GetKeyDown(KeyCode.F))
+            {
+                lastAttackTime = Time.time;
+                Fire();
+            }
         }
-
-
-        if (jumpKeyDown && isOnLadder)
-        {
-            rigidbody.velocity = new Vector2(0, climbSpeed);
-            //Vector3 currentPosition = transform.position;
-            //currentPosition.x = ladderX;
-            //transform.position = currentPosition;
-
-        }
-
-        if(rigidbody.velocity.y > 0.5f)
-        {
-            animatorController.SetBool("jumping", true);
-        }
-        else
-        {
-            animatorController.SetBool("jumping", false);
-        }
-
-
-        if (jumpKeyDown && isGrounded)
-        {
-            rigidbody.velocity = new Vector2(rigidbody.velocity.x, jumpPower);
-        }
-
-        if (jumpKeyUp && rigidbody.velocity.y > 0)
-        {
-            rigidbody.velocity = new Vector2(rigidbody.velocity.x, rigidbody.velocity.y * 0.5f);
-        }
-
-
-        if (xMovement > 0)
-        {
-            moveDirection = 1;
-        }
-        else if (xMovement < 0)
-        {
-            moveDirection = -1;
-        }
-
-        if (moveDirection != spriteDirection)
-        {
-            flip();
-        }
-
-        if (Time.time - lastAttackTime > coolDownTime && Input.GetKeyDown(KeyCode.F))
-        {
-            lastAttackTime = Time.time;
-            Fire();
-        }
-
     }
 
     public Vector3 GetPlayerPosition()
@@ -190,35 +193,37 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //if (isGrounded || !isOnLadder)
+        if (GameManager.instance.GetCurrentState() == GameManager.GameState.InGame)
         {
-            rigidbody.velocity = new Vector2(xMovement * speed, rigidbody.velocity.y);
-
-        }
-
-        if (Mathf.Abs(rigidbody.velocity.x) > 0f && isGrounded)
-        {
-            animatorController.SetBool("running", true);
-        }
-        else
-        {
-
-            animatorController.SetBool("running", false);
-        }
-
-        if (enemyContact && enemyInContact.gameObject.activeInHierarchy)
-        {
-            float playerToEnemy = transform.position.x - enemyInContact.transform.position.x;
-
-            // avoid pushing enemies
-            // enemy in the left and trying to move left or enemy in the right and trying to move right
-            if ((playerToEnemy > 0 && xMovement < 0) || (playerToEnemy < 0 && xMovement > 0))
-
+            //if (isGrounded || !isOnLadder)
             {
-                rigidbody.velocity = Vector2.zero;
+                rigidbody.velocity = new Vector2(xMovement * speed, rigidbody.velocity.y);
+
+            }
+
+            if (Mathf.Abs(rigidbody.velocity.x) > 0f && isGrounded)
+            {
+                animatorController.SetBool("running", true);
+            }
+            else
+            {
+
+                animatorController.SetBool("running", false);
+            }
+
+            if (enemyContact && enemyInContact.gameObject.activeInHierarchy)
+            {
+                float playerToEnemy = transform.position.x - enemyInContact.transform.position.x;
+
+                // avoid pushing enemies
+                // enemy in the left and trying to move left or enemy in the right and trying to move right
+                if ((playerToEnemy > 0 && xMovement < 0) || (playerToEnemy < 0 && xMovement > 0) && (enemyInContact.CurrentFloor == currentFloor))
+
+                {
+                    rigidbody.velocity = Vector2.zero;
+                }
             }
         }
-
     }
 
     public void TakeDamage(float damage)

@@ -34,6 +34,8 @@ public class GameManager : MonoBehaviour
 
     }
 
+    GameState currentGameState = GameState.Menu;
+
     // update score on
     // enemy destroyed
     // collectibles
@@ -48,8 +50,14 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if((Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space)) && currentGameState != GameState.InGame)
+        {
+            SetGameState(GameState.InGame);
+            RestartLevel();
+        }
     }
+
+
 
     public void OnPlayerDead()
     {
@@ -59,6 +67,8 @@ public class GameManager : MonoBehaviour
         //}
         // later make it on restart button click
         RestartLevel();
+
+        SetGameState(GameState.Menu);
     }
 
     void RestartLevel()
@@ -66,6 +76,7 @@ public class GameManager : MonoBehaviour
         if (OnGameStart != null)
         {
             OnGameStart();
+            SetGameState(GameState.InGame);
         }
     }
 
@@ -82,21 +93,29 @@ public class GameManager : MonoBehaviour
 
     public void OnPlayerReachedDestination()
     {
-        OnWin();
+        SetGameState(GameState.GameOver);
     }
 
+    public GameState GetCurrentState()
+    {
+        return currentGameState;
+    }
 
-
-    public delegate void OnGameOverHandler();
-    public static event OnGameOverHandler OnGameOver;
+    void SetGameState(GameState gameState)
+    {
+        currentGameState = gameState;
+        OnGameStateChange(gameState);
+    }
 
     public delegate void OnGameStartHandler();
     public static event OnGameStartHandler OnGameStart;
 
-    public delegate void OnWinHandler();
-    public static event OnWinHandler OnWin;
 
-    public enum GameStates {Menu, InGame, GameOver}
+    public delegate void OnGameStateChangeHandler(GameState gameState);
+    public static event OnGameStateChangeHandler OnGameStateChange;
+
+
+    public enum GameState {Menu, InGame, GameOver}
 }
 
 
