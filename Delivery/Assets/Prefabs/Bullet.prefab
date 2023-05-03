@@ -149,4 +149,4 @@ MonoBehaviour:
   speed: 35
   bulletType: 0
   damage: 50
-  gameBounds: 25
+  gameBounds: 32.5

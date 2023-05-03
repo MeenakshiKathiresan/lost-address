@@ -21,16 +21,40 @@ public class CameraFollow : MonoBehaviour
     [SerializeField]
     float xSmoothTime = 0.5f;
 
-    [SerializeField]
-    float snapDistance = 0.25f; 
 
     private Vector3 velocity = Vector3.zero;
 
     private void Start()
     {
-        Camera mainCamera = GetComponent<Camera>();
-        mainCamera.fieldOfView = 120f; // Set a very small field of view to start the tween from.
-        mainCamera.DOFieldOfView(70, 0.5f);
+        //Camera mainCamera = GetComponent<Camera>();
+        //mainCamera.fieldOfView = 120f; // Set a very small field of view to start the tween from.
+        //mainCamera.DOFieldOfView(70, 0.5f);
+    }
+
+    private void OnEnable()
+    {
+        GameManager.OnGameStateChange += OnGameStateChange;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.OnGameStateChange -= OnGameStateChange;
+    }
+
+    void OnGameStateChange(GameManager.GameState gameState)
+    {
+        switch (gameState)
+        {
+            case GameManager.GameState.InGame:
+                Vector3 target = targetTransform.position + offset;
+                Vector3 targetPosition = transform.position;
+
+                targetPosition.x = target.x;
+                targetPosition.y = target.y;
+
+                transform.position = targetPosition;
+                break;
+        }
     }
 
     private void LateUpdate()
@@ -38,19 +62,12 @@ public class CameraFollow : MonoBehaviour
         Vector3 target = targetTransform.position + offset;
 
         Vector3 targetPosition = transform.position;
-        float distanceToTarget = Mathf.Abs(target.x - transform.position.x);
 
-        if (distanceToTarget > snapDistance)
-        {
-            targetPosition.x = Mathf.SmoothDamp(transform.position.x, target.x, ref velocity.x, xSmoothTime);
-        }
-        else
-        {
-            targetPosition.x = target.x;
-        }
+       
+        targetPosition.x = target.x;
 
 
-        if (Mathf.Abs(target.y - transform.position.y) > yThreshold)
+        if (GameManager.instance.player.canClimb || GameManager.instance.player.isDownLadder)
         {
             targetPosition.y = Mathf.SmoothDamp(transform.position.y, target.y, ref velocity.y, ySmoothTime);
         }

@@ -218,7 +218,7 @@ GameObject:
   - component: {fileID: 2309651}
   - component: {fileID: 2309653}
   - component: {fileID: 2309652}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: floor (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -492,7 +492,7 @@ GameObject:
   - component: {fileID: 48585049}
   - component: {fileID: 48585051}
   - component: {fileID: 48585050}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: floor (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1133,6 +1133,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: floor (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 7356459900987894310, guid: 11c5cffdfaf3c4159b003ca4b42f1078, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 7356459901028087175, guid: 11c5cffdfaf3c4159b003ca4b42f1078, type: 3}
       propertyPath: m_Color.a
       value: 0
@@ -1184,6 +1188,10 @@ PrefabInstance:
     - target: {fileID: 7356459901244937276, guid: 11c5cffdfaf3c4159b003ca4b42f1078, type: 3}
       propertyPath: m_Points.Array.data[2].y
       value: -1.480866
+      objectReference: {fileID: 0}
+    - target: {fileID: 7356459901244937278, guid: 11c5cffdfaf3c4159b003ca4b42f1078, type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8286268462556096225, guid: 11c5cffdfaf3c4159b003ca4b42f1078, type: 3}
       propertyPath: m_Size.x
@@ -1779,7 +1787,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 191032419}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: floor (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2184,7 +2192,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 227088140}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: floor (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3675,7 +3683,7 @@ GameObject:
   m_Component:
   - component: {fileID: 520922013}
   - component: {fileID: 520922014}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: floor (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4128,7 +4136,7 @@ GameObject:
   - component: {fileID: 586717030}
   - component: {fileID: 586717029}
   - component: {fileID: 586717028}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4278,7 +4286,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 587505347}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: floor (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5884,7 +5892,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 788350597}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: floor (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6272,7 +6280,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 70
+  field of view: 80
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -6318,11 +6326,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetTransform: {fileID: 1440297852}
-  offset: {x: 0, y: 3, z: 0}
-  yThreshold: 1
+  offset: {x: 0, y: 4, z: 0}
+  yThreshold: 3.5
   ySmoothTime: 0.2
   xSmoothTime: 0.5
-  snapDistance: 0.2
 --- !u!1 &972943458
 GameObject:
   m_ObjectHideFlags: 0
@@ -8035,6 +8042,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: floor (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 7356459900987894310, guid: 11c5cffdfaf3c4159b003ca4b42f1078, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 7356459901028087175, guid: 11c5cffdfaf3c4159b003ca4b42f1078, type: 3}
       propertyPath: m_Color.a
       value: 0
@@ -8070,6 +8081,10 @@ PrefabInstance:
     - target: {fileID: 7356459901244937276, guid: 11c5cffdfaf3c4159b003ca4b42f1078, type: 3}
       propertyPath: m_Points.Array.data[1].x
       value: -30.041786
+      objectReference: {fileID: 0}
+    - target: {fileID: 7356459901244937278, guid: 11c5cffdfaf3c4159b003ca4b42f1078, type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8286268462556096225, guid: 11c5cffdfaf3c4159b003ca4b42f1078, type: 3}
       propertyPath: m_Size.x
@@ -8891,7 +8906,7 @@ GameObject:
   - component: {fileID: 1249636794}
   - component: {fileID: 1249636796}
   - component: {fileID: 1249636795}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: floor (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8987,6 +9002,64 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1250013881
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1250013882}
+  - component: {fileID: 1250013883}
+  m_Layer: 7
+  m_Name: GroundPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1250013882
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1250013881}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -1.096, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1440297852}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &1250013883
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1250013881}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1.87}
+  m_EdgeRadius: 0
 --- !u!1 &1278194151
 GameObject:
   m_ObjectHideFlags: 0
@@ -9079,7 +9152,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1301644122}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9643,7 +9716,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1411524405}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: floor (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10212,7 +10285,7 @@ GameObject:
   - component: {fileID: 1473102321}
   - component: {fileID: 1473102320}
   - component: {fileID: 1473102319}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10421,7 +10494,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1475154215}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: floor (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10457,7 +10530,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1488702726}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: floor (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10844,6 +10917,10 @@ PrefabInstance:
       value: floor (4)
       objectReference: {fileID: 0}
     - target: {fileID: 7356459900987894310, guid: 11c5cffdfaf3c4159b003ca4b42f1078, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7356459900987894310, guid: 11c5cffdfaf3c4159b003ca4b42f1078, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
@@ -10894,6 +10971,10 @@ PrefabInstance:
     - target: {fileID: 7356459901244937276, guid: 11c5cffdfaf3c4159b003ca4b42f1078, type: 3}
       propertyPath: m_Points.Array.data[2].y
       value: -0.30643845
+      objectReference: {fileID: 0}
+    - target: {fileID: 7356459901244937278, guid: 11c5cffdfaf3c4159b003ca4b42f1078, type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8286268462556096225, guid: 11c5cffdfaf3c4159b003ca4b42f1078, type: 3}
       propertyPath: m_Size.x
@@ -11700,6 +11781,10 @@ PrefabInstance:
       value: floor (1)
       objectReference: {fileID: 0}
     - target: {fileID: 7356459900987894310, guid: 11c5cffdfaf3c4159b003ca4b42f1078, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7356459900987894310, guid: 11c5cffdfaf3c4159b003ca4b42f1078, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
@@ -11750,6 +11835,10 @@ PrefabInstance:
     - target: {fileID: 7356459901244937276, guid: 11c5cffdfaf3c4159b003ca4b42f1078, type: 3}
       propertyPath: m_Points.Array.data[2].y
       value: -0.30643845
+      objectReference: {fileID: 0}
+    - target: {fileID: 7356459901244937278, guid: 11c5cffdfaf3c4159b003ca4b42f1078, type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8286268462556096225, guid: 11c5cffdfaf3c4159b003ca4b42f1078, type: 3}
       propertyPath: m_Size.x
@@ -13767,6 +13856,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: floor (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 7356459900987894310, guid: 11c5cffdfaf3c4159b003ca4b42f1078, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 7356459901028087175, guid: 11c5cffdfaf3c4159b003ca4b42f1078, type: 3}
       propertyPath: m_Color.a
       value: 0
@@ -13818,6 +13911,10 @@ PrefabInstance:
     - target: {fileID: 7356459901244937276, guid: 11c5cffdfaf3c4159b003ca4b42f1078, type: 3}
       propertyPath: m_Points.Array.data[2].y
       value: -1.480866
+      objectReference: {fileID: 0}
+    - target: {fileID: 7356459901244937278, guid: 11c5cffdfaf3c4159b003ca4b42f1078, type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8286268462556096225, guid: 11c5cffdfaf3c4159b003ca4b42f1078, type: 3}
       propertyPath: m_Size.x
@@ -16273,11 +16370,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1024488112, guid: ecf6bff0f0fe64afb91bde0b22a86f1e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.578
+      value: 0.452
       objectReference: {fileID: 0}
     - target: {fileID: 1024488112, guid: ecf6bff0f0fe64afb91bde0b22a86f1e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.24
+      value: 0.391
       objectReference: {fileID: 0}
     - target: {fileID: 1075724497, guid: ecf6bff0f0fe64afb91bde0b22a86f1e, type: 3}
       propertyPath: m_LocalPosition.y
@@ -16290,6 +16387,46 @@ PrefabInstance:
     - target: {fileID: 1075724498, guid: ecf6bff0f0fe64afb91bde0b22a86f1e, type: 3}
       propertyPath: m_SortingOrder
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2065584108432075244, guid: ecf6bff0f0fe64afb91bde0b22a86f1e, type: 3}
+      propertyPath: speed
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2065584108432075244, guid: ecf6bff0f0fe64afb91bde0b22a86f1e, type: 3}
+      propertyPath: jumpPower
+      value: 6.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2065584108432075244, guid: ecf6bff0f0fe64afb91bde0b22a86f1e, type: 3}
+      propertyPath: climbSpeed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2065584108432075244, guid: ecf6bff0f0fe64afb91bde0b22a86f1e, type: 3}
+      propertyPath: fallFactor
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2065584108432075244, guid: ecf6bff0f0fe64afb91bde0b22a86f1e, type: 3}
+      propertyPath: bulletParent
+      value: 
+      objectReference: {fileID: 1581695239}
+    - target: {fileID: 2065584108432075244, guid: ecf6bff0f0fe64afb91bde0b22a86f1e, type: 3}
+      propertyPath: groundCheckPos
+      value: 
+      objectReference: {fileID: 1250013882}
+    - target: {fileID: 2065584108432075244, guid: ecf6bff0f0fe64afb91bde0b22a86f1e, type: 3}
+      propertyPath: groundLayer.m_Bits
+      value: 1024
+      objectReference: {fileID: 0}
+    - target: {fileID: 7897003065596389626, guid: ecf6bff0f0fe64afb91bde0b22a86f1e, type: 3}
+      propertyPath: m_Mass
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7897003065596389626, guid: ecf6bff0f0fe64afb91bde0b22a86f1e, type: 3}
+      propertyPath: m_AngularDrag
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 7897003065596389626, guid: ecf6bff0f0fe64afb91bde0b22a86f1e, type: 3}
+      propertyPath: m_GravityScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7897003065596389628, guid: ecf6bff0f0fe64afb91bde0b22a86f1e, type: 3}
       propertyPath: m_RootOrder
@@ -16335,10 +16472,38 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7897003065596389629, guid: ecf6bff0f0fe64afb91bde0b22a86f1e, type: 3}
+      propertyPath: m_Size.x
+      value: 1.0481234
+      objectReference: {fileID: 0}
+    - target: {fileID: 7897003065596389629, guid: ecf6bff0f0fe64afb91bde0b22a86f1e, type: 3}
+      propertyPath: m_Size.y
+      value: 2.089157
+      objectReference: {fileID: 0}
+    - target: {fileID: 7897003065596389629, guid: ecf6bff0f0fe64afb91bde0b22a86f1e, type: 3}
+      propertyPath: m_Offset.x
+      value: -0.008821964
+      objectReference: {fileID: 0}
+    - target: {fileID: 7897003065596389629, guid: ecf6bff0f0fe64afb91bde0b22a86f1e, type: 3}
+      propertyPath: m_Offset.y
+      value: -0.019794464
+      objectReference: {fileID: 0}
+    - target: {fileID: 7897003065596389629, guid: ecf6bff0f0fe64afb91bde0b22a86f1e, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7897003065596389629, guid: ecf6bff0f0fe64afb91bde0b22a86f1e, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 2.3
+      objectReference: {fileID: 0}
     - target: {fileID: 7897003065596389630, guid: ecf6bff0f0fe64afb91bde0b22a86f1e, type: 3}
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 7897003065596389631, guid: ecf6bff0f0fe64afb91bde0b22a86f1e, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: ad718c019d678483e8a623721ce6f9d8, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ecf6bff0f0fe64afb91bde0b22a86f1e, type: 3}
 --- !u!4 &3802690531508942090
@@ -16653,7 +16818,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3802690532836099706}
   - component: {fileID: 3802690532836099653}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: floor (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16712,7 +16877,7 @@ GameObject:
   - component: {fileID: 3802690533109413987}
   - component: {fileID: 3802690533109413989}
   - component: {fileID: 3802690533109413988}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18028,6 +18193,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: floor
       objectReference: {fileID: 0}
+    - target: {fileID: 7356459900987894310, guid: 11c5cffdfaf3c4159b003ca4b42f1078, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 7356459901028087175, guid: 11c5cffdfaf3c4159b003ca4b42f1078, type: 3}
       propertyPath: m_Color.a
       value: 0
@@ -18055,6 +18224,10 @@ PrefabInstance:
     - target: {fileID: 7356459901225578414, guid: 11c5cffdfaf3c4159b003ca4b42f1078, type: 3}
       propertyPath: m_SortingOrder
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7356459901244937278, guid: 11c5cffdfaf3c4159b003ca4b42f1078, type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8286268462556096225, guid: 11c5cffdfaf3c4159b003ca4b42f1078, type: 3}
       propertyPath: m_Size.x

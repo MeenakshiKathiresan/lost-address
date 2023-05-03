@@ -182,7 +182,9 @@ public class Door : MonoBehaviour
         doorBody.DOLocalMoveX(0, 0.2f);
         //transform.localScale  Vector3.one;
         doorOpened = false;
-        DisableDoor();
+
+        if(GameManager.instance.player.GetCurrentDoor() != this)
+            DisableDoor();
 
    
     }

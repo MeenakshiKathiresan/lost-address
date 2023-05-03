@@ -385,7 +385,7 @@ MonoBehaviour:
   totalHealth: 100
   damage: 20
   healthBar: {fileID: 5274452138372378613}
-  enemySpeed: 4
+  enemySpeed: 3.5
   damageDistance: 1.5
   randomMovementInterval: 0.25
   maxFollowDistance: 10

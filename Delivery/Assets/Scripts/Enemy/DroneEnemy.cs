@@ -39,6 +39,8 @@ public class DroneEnemy : Enemy
 
     int spriteOrder = 2;
 
+
+    Vector2 startPos;
     private void Start()
     {
         
@@ -47,6 +49,8 @@ public class DroneEnemy : Enemy
     {
 
         base.OnEnable();
+
+        startPos = transform.position;
 
         healthBar.parent.gameObject.SetActive(false);
 
@@ -106,26 +110,21 @@ public class DroneEnemy : Enemy
                     }
                     else
                     {
-
-                        if (Time.time - lastDirectionChange > randomMovementInterval)
+                        // when no where near enemy
+                        // go back to start pos
+                        
+                        Vector2 moveDirection = startPos - (Vector2)transform.position;
+                        if(Mathf.Abs(transform.position.x - startPos.x) < 0.5f)
                         {
-                            lastDirectionChange = Time.time;
-                            RaycastHit2D hit = Physics2D.Raycast(transform.position, rigidbody.velocity.normalized, bounceOnBoundsDistance, Physics2D.DefaultRaycastLayers, 0, (int)QueryTriggerInteraction.Collide);
-
-                            // reflect if going towards floor or ladder
-                            if ((hit.collider != null && hit.collider.GetComponent<Floor>()) || hit.collider.GetComponent<Ladder>())
-                            {
-                                Vector2 newDirection = Vector2.Reflect(rigidbody.velocity.normalized, hit.normal);
-                                newDirection.y = 0;
-                                rigidbody.velocity = newDirection.normalized * enemySpeed;
-                            }
-                            else
-                            {
-                                Vector2 randomDirection = new Vector2(Random.Range(-randomMovementRange, randomMovementRange), 0);
-                                randomDirection.y = 0;
-                                rigidbody.velocity = randomDirection.normalized * enemySpeed;
-                            }
+                            rigidbody.velocity = Vector2.zero;
                         }
+                        else
+                        {
+
+                            moveDirection.y = 0;
+                            rigidbody.velocity = moveDirection.normalized * enemySpeed;
+                        }
+
 
                     }
                 }

@@ -10,7 +10,7 @@ public class Bullet : MonoBehaviour, IPoolable
     [SerializeField]
     float damage = 2f;
     [SerializeField]
-    float gameBounds = 25f;
+    float gameBounds = 45f;
     int xDirection = 1;
 
     Vector2 direction;

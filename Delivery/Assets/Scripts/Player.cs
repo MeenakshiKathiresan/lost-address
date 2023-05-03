@@ -24,8 +24,17 @@ public class Player : MonoBehaviour
     [SerializeField]
     bool isGrounded;
 
-    [SerializeField]
-    bool isOnLadder;
+    [HideInInspector]
+    public bool isNearLadder;
+
+    [HideInInspector]
+    public bool canClimb;
+
+    [HideInInspector]
+    public bool isDownLadder;
+
+    bool isJumpAttacking;
+
 
     [SerializeField]
     Transform healthFill;
@@ -56,12 +65,19 @@ public class Player : MonoBehaviour
     [SerializeField]
     ParticleSystem onHit;
 
+    [SerializeField]
+    Transform groundCheckPos;
+
+    [SerializeField]
+    LayerMask groundLayer;
+
 
     float currentHealth = 100;
 
     bool enemyContact = false;
 
     Enemy enemyInContact;
+
 
     int currentFloor;
 
@@ -79,13 +95,15 @@ public class Player : MonoBehaviour
     }
 
     Door currentDoor;
+
     [SerializeField]
     bool isNearDoor;
 
-    float ladderX;
+    [SerializeField]
+    float fallFactor = 10;
 
     Animator animatorController;
-    
+
 
     private void OnEnable()
     {
@@ -122,65 +140,31 @@ public class Player : MonoBehaviour
         {
             xMovement = Input.GetAxis("Horizontal");
 
-            bool jumpKeyDown = Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.W);
-            bool jumpKeyUp = Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.W);
+            if (isJumpAttacking)
+            {
+                // dont move in x axis if jump attacking
+                xMovement /= 3;
+            }
+           
 
-
-
-
-            if (Input.GetKeyDown(KeyCode.Space) && isNearDoor)
+            if (Input.GetKeyDown(KeyCode.F) && isNearDoor)
             {
                 currentDoor.OpenDoor();
             }
 
 
-            if (jumpKeyDown && isOnLadder)
-            {
-                rigidbody.velocity = new Vector2(0, climbSpeed);
-                //Vector3 currentPosition = transform.position;
-                //currentPosition.x = ladderX;
-                //transform.position = currentPosition;
+            HandleJumping();
 
-            }
-
-            if (rigidbody.velocity.y > 0.5f)
-            {
-                animatorController.SetBool("jumping", true);
-            }
-            else
-            {
-                animatorController.SetBool("jumping", false);
-            }
+            HandleFlipping();
 
 
-            if (jumpKeyDown && isGrounded)
-            {
-                rigidbody.velocity = new Vector2(rigidbody.velocity.x, jumpPower);
-            }
-
-            if (jumpKeyUp && rigidbody.velocity.y > 0)
-            {
-                rigidbody.velocity = new Vector2(rigidbody.velocity.x, rigidbody.velocity.y * 0.5f);
-            }
-
-
-            if (xMovement > 0)
-            {
-                moveDirection = 1;
-            }
-            else if (xMovement < 0)
-            {
-                moveDirection = -1;
-            }
-
-            if (moveDirection != spriteDirection)
-            {
-                flip();
-            }
-
-            if (Time.time - lastAttackTime > coolDownTime && Input.GetKeyDown(KeyCode.F))
+            if (Time.time - lastAttackTime > coolDownTime && Input.GetKeyDown(KeyCode.Space))
             {
                 lastAttackTime = Time.time;
+                if(rigidbody.velocity.y > 0)
+                {
+                    isJumpAttacking = true;
+                }
                 Fire();
             }
         }
@@ -190,6 +174,69 @@ public class Player : MonoBehaviour
     {
         return transform.position;
     }
+
+    void HandleFlipping()
+    {
+        if (xMovement > 0)
+        {
+            moveDirection = 1;
+        }
+        else if (xMovement < 0)
+        {
+            moveDirection = -1;
+        }
+
+        if (moveDirection != spriteDirection)
+        {
+            flip();
+        }
+    }
+
+    void HandleJumping()
+    {
+        bool jumpKeyDown = Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W);
+        bool jumpKeyUp = Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.W);
+
+        //if (jumpKeyDown && isOnLadder)
+        //{
+        //    rigidbody.AddForce(Vector2.up * climbSpeed, ForceMode2D.Impulse);
+
+        //}
+        //else
+        if (jumpKeyDown && (IsGrounded() || canClimb))
+        {
+            rigidbody.velocity = new Vector2(rigidbody.velocity.x, jumpPower);
+
+        }
+
+        if(isNearLadder && rigidbody.velocity.y < 0.5f)
+        {
+            isDownLadder = true;
+        }
+        else
+        {
+            isDownLadder = false;
+        }
+
+        // come down faster
+        if (rigidbody.velocity.y < -0.5f)
+        {
+            rigidbody.velocity -= Vector2.down * Physics2D.gravity * fallFactor * Time.deltaTime;
+        }
+
+        //set animations
+        if (rigidbody.velocity.y > 0.5f)
+        {
+            animatorController.SetBool("jumping", true);
+        }
+        else
+        {
+            animatorController.SetBool("jumping", false);
+        }
+
+    }
+
+
 
     private void FixedUpdate()
     {
@@ -201,7 +248,7 @@ public class Player : MonoBehaviour
 
             }
 
-            if (Mathf.Abs(rigidbody.velocity.x) > 0f && isGrounded)
+            if (Mathf.Abs(rigidbody.velocity.x) > 0f && IsGrounded())
             {
                 animatorController.SetBool("running", true);
             }
@@ -224,6 +271,11 @@ public class Player : MonoBehaviour
                 }
             }
         }
+    }
+
+    public float getVelocityY()
+    {
+        return rigidbody.velocity.y;
     }
 
     public void TakeDamage(float damage)
@@ -250,6 +302,11 @@ public class Player : MonoBehaviour
         return CurrentFloor;
     }
 
+    public Door GetCurrentDoor()
+    {
+       return currentDoor;
+    }
+
     void Fire()
     {
         Bullet bullet = (Bullet)PoolManager.Instantiate(bulletString, fireTransform.position, fireTransform.rotation);
@@ -258,15 +315,33 @@ public class Player : MonoBehaviour
     }
 
 
+
+    bool IsGrounded()
+    {
+        Collider2D ground = Physics2D.OverlapBox(groundCheckPos.position, new Vector2(1f, 0.3f), 0, groundLayer);
+
+
+        if (ground != null && ground.GetComponentInParent<Floor>())
+        {
+            Floor floor = ground.gameObject.GetComponentInParent<Floor>();
+            CurrentFloor = floor.CurrentFloor;
+            isGrounded = true;
+            isJumpAttacking = false;
+
+        }
+        else
+        {
+            isGrounded = false;
+        }
+
+
+        return isGrounded;
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.GetComponentInParent<Floor>())
-        {
-            isGrounded = true;
-            Floor floor = collision.gameObject.GetComponentInParent<Floor>();
-            CurrentFloor = floor.CurrentFloor;
-        }
-        else if (collision.gameObject.GetComponent<Enemy>())
+
+        if (collision.gameObject.GetComponent<Enemy>())
         {
             enemyContact = true;
             enemyInContact = collision.gameObject.GetComponent<Enemy>();
@@ -284,9 +359,10 @@ public class Player : MonoBehaviour
         }
 
 
-     
 
-        else if (collision.gameObject.GetComponent<Bullet>()){
+
+        else if (collision.gameObject.GetComponent<Bullet>())
+        {
             Bullet bullet = collision.gameObject.GetComponent<Bullet>();
             TakeDamage(bullet.Damage);
             bullet.PoolDestroy();
@@ -297,12 +373,8 @@ public class Player : MonoBehaviour
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.gameObject.GetComponentInParent<Floor>())
-        {
-            isGrounded = false;
 
-        }
-        else if (collision.gameObject.GetComponent<Enemy>())
+        if (collision.gameObject.GetComponent<Enemy>())
         {
             enemyContact = false;
         }
@@ -312,8 +384,12 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.GetComponent<Ladder>())
         {
-            isOnLadder = true;
-            ladderX = collision.transform.position.x;
+            isNearLadder = true;
+
+            if (IsGrounded())
+            {
+                canClimb = true;
+            }
 
         }
         else if (collision.gameObject.GetComponent<Door>())
@@ -331,14 +407,16 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.GetComponent<Ladder>())
         {
-            isOnLadder = false;
+            isNearLadder = canClimb = false;
         }
         else if (collision.gameObject.GetComponent<Door>())
         {
             isNearDoor = false;
-            currentDoor = collision.gameObject.GetComponent<Door>();
             // current door call disable
+            if(currentDoor)
             currentDoor.DisableDoor();
+
+            currentDoor = null;
         }
     }
 
