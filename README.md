@@ -1,6 +1,8 @@
 # Lost address
 
-<img width="539" alt="599a2" src="https://github.com/MeenakshiKathiresan/Delivery/assets/26730019/c73f7933-5865-49eb-8c03-df1f92b6fa07">
+<kbd>
+<img alt="599a2" src="https://github.com/MeenakshiKathiresan/Delivery/assets/26730019/c73f7933-5865-49eb-8c03-df1f92b6fa07">
+</kbd>
 
 ## Theme and game play
 
