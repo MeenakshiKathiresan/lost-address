@@ -51,7 +51,6 @@ public class LevelSettings : MonoBehaviour
 
     void StartLevel()
     {
-
         
 
         if (Random.Range(0, 2) == 0) 

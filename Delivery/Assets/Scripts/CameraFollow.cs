@@ -13,7 +13,10 @@ public class CameraFollow : MonoBehaviour
     Vector3 offset;
 
     [SerializeField]
-    float yThreshold = 1f;
+    float offsetY = 1f;
+
+    [SerializeField]
+    float thresholdY = 3f;
 
 
     [SerializeField]
@@ -46,6 +49,7 @@ public class CameraFollow : MonoBehaviour
         switch (gameState)
         {
             case GameManager.GameState.InGame:
+                
                 Vector3 target = targetTransform.position + offset;
                 Vector3 targetPosition = transform.position;
 
@@ -53,9 +57,11 @@ public class CameraFollow : MonoBehaviour
                 targetPosition.y = target.y;
 
                 transform.position = targetPosition;
+
                 break;
         }
     }
+
 
     private void LateUpdate()
     {
@@ -66,10 +72,21 @@ public class CameraFollow : MonoBehaviour
        
         targetPosition.x = target.x;
 
+        
 
-        if (GameManager.instance.player.canClimb || GameManager.instance.player.isDownLadder)
+
+        if (GameManager.instance.player.canClimb || GameManager.instance.player.isDownLadder || GameManager.instance.player.IsGrounded())
         {
-            targetPosition.y = Mathf.SmoothDamp(transform.position.y, target.y, ref velocity.y, ySmoothTime);
+    
+            float difference = Mathf.Abs(target.y - transform.position.y);
+
+
+            // follow player y only while climbing up or down and grounded
+            if (difference > 6f || GameManager.instance.player.IsGrounded())
+            {
+                targetPosition.y = Mathf.SmoothDamp(transform.position.y, target.y, ref velocity.y, ySmoothTime);
+            }
+            
         }
         
 
