@@ -399,7 +399,6 @@ public class Player : MonoBehaviour
                 {
                     hitOnce = true;
                     TakeDamage(damageOnHittingEnemyFromBelow);
-                    print("hit below");
                 }
             }
         }

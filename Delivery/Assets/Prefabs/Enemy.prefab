@@ -371,7 +371,7 @@ MonoBehaviour:
   startStallTime: 1.25
   onAttack: {fileID: 6051173859345561750}
   spriteTransform: {fileID: 4174553266273181101}
-  heightOffset: 2
+  heightOffset: 2.25
 --- !u!1001 &6051173859359844182
 PrefabInstance:
   m_ObjectHideFlags: 0

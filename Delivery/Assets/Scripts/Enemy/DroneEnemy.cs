@@ -61,6 +61,9 @@ public class DroneEnemy : Enemy
 
         healthBar.parent.gameObject.SetActive(false);
 
+        // incase it died in a diff position
+        spriteTransform.localPosition = Vector2.zero;
+
         collider = GetComponent<Collider2D>();
         collider.enabled = false;
 
@@ -70,7 +73,8 @@ public class DroneEnemy : Enemy
         // first 1 sec is stalling time, use 0.5sec of that to move up
         StartCoroutine(MovePlayerUp());
 
-        ShakeEnemy();
+        Invoke("ShakeEnemy", 1);
+
 
     }
 
