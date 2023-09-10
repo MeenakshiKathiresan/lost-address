@@ -27,16 +27,6 @@ public class GroundEnemy : Enemy
     public float leftBound;
     public float rightBound;
 
-    //[SerializeField]
-    //float randomJumpTime = 1f;
-
-    //[SerializeField]
-    //float jumpPower = 5;
-
-    //float lastJump = 0;
-
-
-
     [SerializeField]
     Transform aboveCollider;
 
@@ -48,7 +38,6 @@ public class GroundEnemy : Enemy
         startPos = transform.position;
         startPos.x -= moveRange / 2;
 
-        //randomJumpTime = Random.Range(2, 4);
 
         sprite = GetComponent<SpriteRenderer>();
     }
@@ -68,23 +57,9 @@ public class GroundEnemy : Enemy
             playerPosition = GameManager.instance.player.transform.position;
             float playerDistance = Mathf.Abs(playerPosition.x - transform.position.x);
 
-            // jump 
-            //if (Time.time - lastJump > randomJumpTime) 
-            //{
-            //    lastJump = Time.time;
-
-            //    RaycastHit2D hit = Physics2D.Raycast(aboveCollider.position, Vector2.up, 4);
-            //    if (hit.collider == null || !hit.collider.GetComponent<Enemy>())
-            //    {
-            //        rigidbody.velocity = new Vector2(rigidbody.velocity.x, jumpPower);
-            //        Debug.Log("jumps");
-            //    }
-            //}
-
 
             if (playerDistance < shootingDistanceFromPlayer && inSameFloor)
             {
-                GetComponent<Rigidbody>().velocity = new Vector2(0, GetComponent<Rigidbody>().velocity.y);
 
                 CheckAndShoot();
             }
@@ -101,9 +76,8 @@ public class GroundEnemy : Enemy
                 {
                     dir = 1;
                 }
-                GetComponent<Rigidbody>().velocity = new Vector2(dir * enemySpeed, GetComponent<Rigidbody>().velocity.y);
-                CheckAndShoot();
 
+                transform.Translate(Vector2.right * dir * enemySpeed * Time.deltaTime);
 
             }
 
@@ -118,27 +92,20 @@ public class GroundEnemy : Enemy
                     defaultMovementdir *= -1;
                     startPos.x = transform.position.x;
 
-
                 }
-                GetComponent<Rigidbody>().velocity = new Vector2(enemySpeed * defaultMovementdir, GetComponent<Rigidbody>().velocity.y);
+
+                transform.Translate(Vector2.right * defaultMovementdir * enemySpeed * Time.deltaTime);
 
             }
 
-
-
-
-
-
         }
     }
+
+
+
+
     void CheckAndShoot()
     {
-        bool outOfBounds = (transform.position.x > rightBound || transform.position.x < leftBound);
-
-        if (outOfBounds)
-        {
-            GetComponent<Rigidbody>().velocity = Vector2.zero;
-        }
 
         if (Time.time - lastShot > shootInterval && sprite.isVisible)
         {
@@ -160,22 +127,7 @@ public class GroundEnemy : Enemy
 
     }
 
-    //protected override void OnCollisionEnter2D(Collision2D collision)
-    //{
-    //    base.OnCollisionEnter2D(collision);
-
-
-    //    if (collision.gameObject.GetComponent<Player>())
-    //    {
-    //        foreach (ContactPoint2D contact in collision.contacts)
-    //        {
-    //            if (contact.normal.y < 0f)
-    //            {
-    //                TakeDamage(currentHealth);
-    //            }
-    //        }
-    //    }
-    //}
+   
 
     private void OnDrawGizmos()
     {

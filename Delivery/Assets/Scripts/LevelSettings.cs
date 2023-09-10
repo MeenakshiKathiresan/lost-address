@@ -106,7 +106,7 @@ public class LevelSettings : MonoBehaviour
                     float bound = levelBounds - 8;
                     posX = Random.Range(-bound, bound);
                 }
-                float posY = floors[i].transform.position.y + 2;
+                float posY = floors[i].transform.position.y + 1;
 
                 GroundEnemy groundEnemy = (GroundEnemy)PoolManager.Instantiate("groundEnemy", new Vector2(posX, posY), transform.rotation);
                 groundEnemy.CurrentFloor = i;

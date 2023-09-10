@@ -20,11 +20,18 @@ public class UIManager : MonoBehaviour
     private void OnEnable()
     {
         GameManager.OnGameStateChange += OnGameStateChange;
+        Reset();
     }
 
     private void OnDisable()
     {
         GameManager.OnGameStateChange -= OnGameStateChange;
+    }
+
+    private void Reset()
+    {
+        winText.transform.localScale = Vector2.zero;
+
     }
 
     void OnGameStateChange(GameManager.GameState gameState)

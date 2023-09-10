@@ -137,7 +137,6 @@ public class Door : MonoBehaviour
         {
             Vector2 pos = new Vector2(transform.position.x, transform.position.y);
             enemy = (Enemy)PoolManager.Instantiate("enemy", pos, transform.rotation);
-            Debug.Log(pos + " " + enemy.transform.position);
             enemy.CurrentFloor = currentFloor;
         }
         else
