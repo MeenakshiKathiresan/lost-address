@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public class Player : MonoBehaviour
 {
     [SerializeField]
@@ -81,6 +80,8 @@ public class Player : MonoBehaviour
     Enemy enemyInContact;
 
 
+
+
     int currentFloor;
 
     public int CurrentFloor
@@ -135,12 +136,26 @@ public class Player : MonoBehaviour
 
     }
 
+    float xInput;
+    float lerpThreshold = 0.005f;
+
     // Update is called once per frame
     void Update()
     {
         if (GameManager.instance.GetCurrentState() == GameManager.GameState.InGame)
         {
-            xMovement = Input.GetAxis("Horizontal");
+            xInput = Input.GetAxis("Horizontal");
+            float deceleration = 2 * Time.deltaTime;
+
+            if (Mathf.Abs(xMovement - xInput) > lerpThreshold && rigidbody.velocity.y != 0)
+            {
+                xMovement = Mathf.Lerp(xMovement, xInput, deceleration);
+            }
+            else
+            {
+                xMovement = xInput;
+            }
+
            
 
             if (isJumpAttacking)
@@ -209,16 +224,20 @@ public class Player : MonoBehaviour
         }
     }
 
+
+
     void HandleJumping()
     {
         bool jumpKeyDown = Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W);
-
+        
 
         if (jumpKeyDown && (IsGrounded() || (canClimb && rigidbody.velocity.x == 0)))
         {
             rigidbody.velocity = new Vector2(rigidbody.velocity.x, jumpPower);
+            
 
         }
+
 
 
         // come down faster
@@ -226,6 +245,7 @@ public class Player : MonoBehaviour
         {
             rigidbody.velocity -= Vector2.down * Physics2D.gravity * fallFactor * Time.deltaTime;
         }
+        
        
 
         //set animations
@@ -247,16 +267,11 @@ public class Player : MonoBehaviour
     {
         if (GameManager.instance.GetCurrentState() == GameManager.GameState.InGame)
         {
-            //if (isGrounded || !isOnLadder)
-            {
-                rigidbody.velocity = new Vector2(xMovement * speed, rigidbody.velocity.y);
-
-            }
+           
+             rigidbody.velocity = new Vector2(xMovement * speed, rigidbody.velocity.y); 
 
 
-            
-
-            if (Mathf.Abs(rigidbody.velocity.x) > 0f && IsGrounded())
+            if (Mathf.Abs(rigidbody.velocity.x) > 0.5f && IsGrounded())
             {
                 animatorController.SetBool("running", true);
             }
