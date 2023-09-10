@@ -139,31 +139,38 @@ public class Player : MonoBehaviour
     float xInput;
     float lerpThreshold = 0.005f;
 
+
     // Update is called once per frame
     void Update()
     {
         if (GameManager.instance.GetCurrentState() == GameManager.GameState.InGame)
         {
-            xInput = Input.GetAxis("Horizontal");
-            float deceleration = 2 * Time.deltaTime;
 
-            if (Mathf.Abs(xMovement - xInput) > lerpThreshold && rigidbody.velocity.y != 0)
-            {
-                xMovement = Mathf.Lerp(xMovement, xInput, deceleration);
-            }
-            else
-            {
-                xMovement = xInput;
-            }
+            xMovement = Input.GetAxis("Horizontal");
+            //xInput = Input.GetAxis("Horizontal");
 
-           
+            //float deceleration = 1 * Time.deltaTime;
+
+
+            //// input in same direction as movement, within threshold, in air
+            //if (Mathf.Abs(xMovement - xInput) > lerpThreshold && Mathf.Abs(xInput) < 0.2f && rigidbody.velocity.y != 0)
+            //{
+            //    Debug.Log("Decelerating");
+            //    xMovement = Mathf.Lerp(xMovement, xInput, deceleration);
+            //}
+            //else
+            //{
+            //    xMovement = xInput;
+            //}
+
+
 
             if (isJumpAttacking)
             {
                 // dont move in x axis if jump attacking
                 xMovement /= 3;
             }
-           
+
 
             if (Input.GetKeyDown(KeyCode.F) && isNearDoor)
             {
@@ -224,7 +231,12 @@ public class Player : MonoBehaviour
         }
     }
 
+    [SerializeField]
+    float lowJumpMultiplier = 2.5f;
 
+
+    [SerializeField]
+    float jumpTime = 0;
 
     void HandleJumping()
     {
@@ -235,18 +247,27 @@ public class Player : MonoBehaviour
         {
             rigidbody.velocity = new Vector2(rigidbody.velocity.x, jumpPower);
             
-
         }
 
+        //if (rigidbody.velocity.y > 0)
+        //{
+        //    jumpTime += Time.deltaTime;
+        //    Debug.Log(jumpTime);
+        //}
 
 
         // come down faster
         if (rigidbody.velocity.y < 0f)
         {
+            jumpTime = 0;
             rigidbody.velocity -= Vector2.down * Physics2D.gravity * fallFactor * Time.deltaTime;
         }
-        
-       
+        // low jump
+        else if (rigidbody.velocity.y > 0f && !jumpKeyDown)
+        {
+            rigidbody.velocity += Vector2.up * Physics2D.gravity * (lowJumpMultiplier - 1) * Time.deltaTime;
+        }
+
 
         //set animations
         if (rigidbody.velocity.y > 0.5f)

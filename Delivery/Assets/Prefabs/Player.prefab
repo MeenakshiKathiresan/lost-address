@@ -305,9 +305,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 8
   jumpPower: 22
-  climbSpeed: 20
   isGrounded: 0
-  isOnLadder: 0
+  isNearLadder: 0
+  canClimb: 0
+  isDownLadder: 0
   healthFill: {fileID: 341797519}
   fireTransform: {fileID: 1024488112}
   bulletString: bullet
@@ -316,7 +317,13 @@ MonoBehaviour:
   damageOnHittingEnemyFromBelow: 20
   totalHealth: 100
   onHit: {fileID: 2065584107685585984}
+  groundCheckPos: {fileID: 0}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
   isNearDoor: 0
+  fallFactor: 10
+  lowJumpMultiplier: 2000
 --- !u!50 &7897003065596389626
 Rigidbody2D:
   serializedVersion: 4
