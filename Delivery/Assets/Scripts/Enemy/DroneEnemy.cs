@@ -13,14 +13,8 @@ public class DroneEnemy : Enemy
     [SerializeField]
     float randomMovementInterval = 0.25f;
 
-    float randomMovementRange = 1f;
-
-
     [SerializeField]
     public float maxFollowDistance = 8f;
-
-
-    float lastDirectionChange = 0;
 
 
     [SerializeField]
@@ -35,7 +29,17 @@ public class DroneEnemy : Enemy
     [SerializeField]
     Transform spriteTransform;
 
+    [SerializeField]
+    float heightOffset = 2f;
+
+
     SpriteRenderer[] sprites;
+
+    Collider2D collider;
+
+    bool inSameFloor;
+
+    float distanceToPlayer;
 
     int spriteOrder = 2;
 
@@ -43,24 +47,40 @@ public class DroneEnemy : Enemy
     Vector2 startPos;
     private void Start()
     {
-        
+
     }
+
+
     protected override void OnEnable()
     {
 
         base.OnEnable();
 
         startPos = transform.position;
+        startPos.y = transform.position.y + heightOffset;
 
         healthBar.parent.gameObject.SetActive(false);
+
+        collider = GetComponent<Collider2D>();
+        collider.enabled = false;
 
         sprites = GetComponentsInChildren<SpriteRenderer>();
 
         SetSpritesSortingOrder(2);
         // first 1 sec is stalling time, use 0.5sec of that to move up
         StartCoroutine(MovePlayerUp());
- 
+
+        ShakeEnemy();
+
     }
+
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+
+        spriteTransform.DOKill(false);
+    }
+
 
 
     // Update is called once per frame
@@ -68,100 +88,71 @@ public class DroneEnemy : Enemy
     {
         if (GameManager.instance.GetCurrentState() == GameManager.GameState.InGame)
         {
+            int playerFloor = GameManager.instance.player.GetCurrentFloor();
+            inSameFloor = CurrentFloor == playerFloor;
+
             // start moving after initial stall time
             if (Time.time - startTime > startStallTime)
             {
-                Vector2 playerPosition = GameManager.instance.player.GetPlayerPosition();
-                float distanceToPlayer = Mathf.Abs(transform.position.x -  playerPosition.x);
-
-                int playerFloor = GameManager.instance.player.GetCurrentFloor();
-                bool inSameFloor = CurrentFloor == playerFloor;
-
-                if (distanceToPlayer > damageDistance)
+                if (inSameFloor)
                 {
-                    // chase player if within follow dista
-                    // nce and in same floor
-                    if (distanceToPlayer <= maxFollowDistance && inSameFloor)
+                    Vector2 playerPosition = GameManager.instance.player.GetPlayerPosition();
+                    distanceToPlayer = Mathf.Abs(transform.position.x - playerPosition.x);
+
+
+
+                    int direction = transform.position.x < playerPosition.x ? 1 : -1;
+
+                    if (distanceToPlayer > damageDistance)
                     {
-
-                        Vector2 moveDirection = playerPosition - (Vector2)transform.position;
-
-                        //Clamp y value
-                        //moveDirection.y = Random.Range(-1.5f, 1.5f);
-
-                        // reflect if going towards floor or ladder
-                        // include trigger layers
-                        RaycastHit2D hit = Physics2D.Raycast(transform.position, rigidbody.velocity.normalized, bounceOnBoundsDistance, Physics2D.DefaultRaycastLayers, 0, (int)QueryTriggerInteraction.Collide);
-
-
-                        if ((hit.collider != null && hit.collider.GetComponent<Floor>()) || (hit.collider != null && hit.collider.GetComponent<Ladder>()))
-                        {
-                            Vector2 newDirection = Vector2.Reflect(rigidbody.velocity.normalized, hit.normal);
-                            newDirection.y = 0;
-                            rigidbody.velocity = newDirection.normalized * enemySpeed;
-                        }
-                        else
-                        {
-                            //chase!
-
-                            moveDirection.y = 0;
-                            rigidbody.velocity = moveDirection.normalized * enemySpeed;
-                        }
+                        transform.Translate(Vector2.right * direction * enemySpeed * Time.deltaTime);
                     }
-                    else
-                    {
-                        // when no where near enemy
-                        // go back to start pos
-                        
-                        Vector2 moveDirection = startPos - (Vector2)transform.position;
-                        if(Mathf.Abs(transform.position.x - startPos.x) < 0.5f)
-                        {
-                            rigidbody.velocity = Vector2.zero;
-                        }
-                        else
-                        {
 
-                            moveDirection.y = 0;
-                            rigidbody.velocity = moveDirection.normalized * enemySpeed;
-                        }
+                    HandleFiring();
 
-
-                    }
                 }
                 else
                 {
-                    rigidbody.velocity = Vector2.zero;
-                }
-
-
-                if (Time.time - lastShot > shootInterval && inSameFloor)
-                {
-                    lastShot = Time.time;
-
-                    if (distanceToPlayer < damageDistance)
+                    if (Vector2.Distance(transform.position, startPos) > 0.1f)
                     {
-                        //TODO Put claw in player direction
-                        // Get player with collider overlap circle
-                        GameManager.instance.player.TakeDamage(damage);
-                        onAttack.Play();
-
-                        Vector2 direction = (GameManager.instance.player.transform.position - spriteTransform.transform.position).normalized;
-
-                        spriteTransform.DOLocalMove(direction, 0.2f).SetLoops(2, LoopType.Yoyo);
+                        Vector2 moveDirection = (startPos - (Vector2)transform.position).normalized;
+                        transform.Translate(moveDirection * enemySpeed * Time.deltaTime);
                     }
+
                 }
+                
             }
-
-            else
-            {
-                rigidbody.velocity = Vector2.zero;
-               
-            }
-
-
         }
     }
 
+    void HandleFiring()
+    {
+        if (Time.time - lastShot > shootInterval && inSameFloor)
+        {
+            lastShot = Time.time;
+
+            if (distanceToPlayer < damageDistance)
+            {     // TODO Get player with collider overlap circle
+                GameManager.instance.player.TakeDamage(damage);
+                onAttack.Play();
+
+                Vector2 direction = (GameManager.instance.player.transform.position - spriteTransform.transform.position).normalized * 1.5f;
+
+                spriteTransform.DOLocalMove(direction, 0.2f).SetLoops(2, LoopType.Yoyo);
+
+            }
+        }
+
+        if (!collider.enabled)
+        {
+            collider.enabled = true;
+        }
+    }
+
+    void ShakeEnemy()
+    {
+        spriteTransform.DOShakePosition(1, 0.4f, 0, 90).SetLoops(-1);
+    }
 
 
     IEnumerator MovePlayerUp()
@@ -171,7 +162,7 @@ public class DroneEnemy : Enemy
         SetSpritesSortingOrder(5);
 
         healthBar.parent.gameObject.SetActive(true);
-        transform.DOMoveY(transform.position.y + 1.5f, 0.3f);
+        transform.DOMoveY(transform.position.y + heightOffset, 0.3f);
     }
 
 
@@ -180,14 +171,19 @@ public class DroneEnemy : Enemy
         spriteOrder = order;
         sprites[0].sortingOrder = order;
 
-
-
         //for (int i = 0; i < sprites.Length; i++)
         //{
         //    sprites[i].sortingOrder = order;
         //}
     }
-  
-
-
 }
+
+
+
+
+
+
+
+
+
+

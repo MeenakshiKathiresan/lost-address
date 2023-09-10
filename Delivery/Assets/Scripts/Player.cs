@@ -72,6 +72,7 @@ public class Player : MonoBehaviour
     LayerMask groundLayer;
 
 
+    [SerializeField]
     float currentHealth = 100;
 
     bool enemyContact = false;
@@ -302,17 +303,17 @@ public class Player : MonoBehaviour
                 animatorController.SetBool("running", false);
             }
 
-            if (enemyContact && enemyInContact.gameObject.activeInHierarchy)
-            {
-                float playerToEnemy = transform.position.x - enemyInContact.transform.position.x;
+            //if (enemyContact && enemyInContact.gameObject.activeInHierarchy)
+            //{
+            //    float playerToEnemy = transform.position.x - enemyInContact.transform.position.x;
 
-                // avoid pushing enemies
-                // enemy in the left and trying to move left or enemy in the right and trying to move right
-                if ((playerToEnemy > 0 && xMovement < 0) || (playerToEnemy < 0 && xMovement > 0) && (enemyInContact.CurrentFloor == currentFloor))
-                {
-                    rigidbody.velocity = Vector2.zero;
-                }
-            }
+            //    // avoid pushing enemies
+            //    // enemy in the left and trying to move left or enemy in the right and trying to move right
+            //    if ((playerToEnemy > 0 && xMovement < 0) || (playerToEnemy < 0 && xMovement > 0) && (enemyInContact.CurrentFloor == currentFloor))
+            //    {
+            //        rigidbody.velocity = Vector2.zero;
+            //    }
+            //}
         }
     }
 
@@ -398,6 +399,7 @@ public class Player : MonoBehaviour
                 {
                     hitOnce = true;
                     TakeDamage(damageOnHittingEnemyFromBelow);
+                    print("hit below");
                 }
             }
         }

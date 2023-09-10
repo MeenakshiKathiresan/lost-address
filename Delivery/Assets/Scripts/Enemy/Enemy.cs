@@ -37,7 +37,6 @@ public class Enemy : MonoBehaviour, IPoolable
     }
 
 
-    protected Rigidbody2D rigidbody;
 
     protected float startTime;
 
@@ -48,13 +47,12 @@ public class Enemy : MonoBehaviour, IPoolable
 
     protected virtual void OnEnable()
     {
-        rigidbody = GetComponent<Rigidbody2D>();
         SetToDefault();
 
         GameManager.OnGameStart += Reset;
     }
 
-    protected void OnDisable()
+    protected virtual void OnDisable()
     {
         GameManager.OnGameStart -= Reset;
     }

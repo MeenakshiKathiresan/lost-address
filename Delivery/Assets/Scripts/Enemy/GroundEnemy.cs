@@ -84,7 +84,7 @@ public class GroundEnemy : Enemy
 
             if (playerDistance < shootingDistanceFromPlayer && inSameFloor)
             {
-                rigidbody.velocity = new Vector2(0, rigidbody.velocity.y);
+                GetComponent<Rigidbody>().velocity = new Vector2(0, GetComponent<Rigidbody>().velocity.y);
 
                 CheckAndShoot();
             }
@@ -101,7 +101,7 @@ public class GroundEnemy : Enemy
                 {
                     dir = 1;
                 }
-                rigidbody.velocity = new Vector2(dir * enemySpeed, rigidbody.velocity.y);
+                GetComponent<Rigidbody>().velocity = new Vector2(dir * enemySpeed, GetComponent<Rigidbody>().velocity.y);
                 CheckAndShoot();
 
 
@@ -120,7 +120,7 @@ public class GroundEnemy : Enemy
 
 
                 }
-                rigidbody.velocity = new Vector2(enemySpeed * defaultMovementdir, rigidbody.velocity.y);
+                GetComponent<Rigidbody>().velocity = new Vector2(enemySpeed * defaultMovementdir, GetComponent<Rigidbody>().velocity.y);
 
             }
 
@@ -137,7 +137,7 @@ public class GroundEnemy : Enemy
 
         if (outOfBounds)
         {
-            rigidbody.velocity = Vector2.zero;
+            GetComponent<Rigidbody>().velocity = Vector2.zero;
         }
 
         if (Time.time - lastShot > shootInterval && sprite.isVisible)
