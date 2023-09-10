@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using TMPro;
 
 public class Door : MonoBehaviour
 {
@@ -17,6 +18,8 @@ public class Door : MonoBehaviour
     Transform doorBody;
 
     SpriteRenderer[] sprites;
+
+    TextMeshPro doorNo;
 
     public Direction DoorDirection
     {
@@ -83,6 +86,9 @@ public class Door : MonoBehaviour
     private void OnEnable()
     {
         sprites = GetComponentsInChildren<SpriteRenderer>();
+
+        doorNo = GetComponentInChildren<TextMeshPro>();
+
         DisableDoor();
 
         // TODO put level design and spawn min max of that
@@ -103,6 +109,15 @@ public class Door : MonoBehaviour
     {
         doorOpened = false;
         enemyCount = Random.Range(1, 4);
+    }
+
+    public void SetCurrentFloorAndDoor(int floor, int door)
+    {
+        currentDoor = door;
+        currentFloor = floor;
+
+
+        doorNo.text = (((currentFloor + 1) * 10) + currentDoor + 1).ToString();
     }
 
     public void OpenDoor()
@@ -160,6 +175,8 @@ public class Door : MonoBehaviour
 
             sprites[i].DOColor(new Color(255, 255, 255, 1), 0.3f);
         }
+
+        doorNo.alpha = 1;
     }
 
     public void DisableDoor()
@@ -171,6 +188,8 @@ public class Door : MonoBehaviour
 
                 sprites[i].DOColor(new Color(255, 255, 255, 0.25f), 0.3f);
             }
+
+            doorNo.alpha = 0.25f;
         }
         
     }

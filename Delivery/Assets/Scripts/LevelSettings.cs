@@ -146,8 +146,7 @@ public class LevelSettings : MonoBehaviour
                     }
                 }
 
-                currentDoor.currentFloor = i;
-                currentDoor.currentDoor = j;
+                currentDoor.SetCurrentFloorAndDoor(i, j);
 
                 
                 //float spawnEnemyProbability = 1;//Random.Range(0f, 1f);
