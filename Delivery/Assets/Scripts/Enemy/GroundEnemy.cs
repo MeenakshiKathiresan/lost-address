@@ -1,6 +1,7 @@
-using System.Collections;
+ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class GroundEnemy : Enemy
 {
@@ -27,6 +28,10 @@ public class GroundEnemy : Enemy
     public float leftBound;
     public float rightBound;
 
+
+    int spriteDirection = 1;
+    int moveDirection = 1;
+
     [SerializeField]
     Transform aboveCollider;
 
@@ -43,7 +48,7 @@ public class GroundEnemy : Enemy
     }
 
 
-    int dir;
+    int direction;
 
     int defaultMovementdir = 1;
     // Update is called once per frame
@@ -70,14 +75,14 @@ public class GroundEnemy : Enemy
 
                 if (playerPosition.x < transform.position.x)
                 {
-                    dir = -1;
+                    direction = -1;
                 }
                 else
                 {
-                    dir = 1;
+                    direction = 1;
                 }
 
-                transform.Translate(Vector2.right * dir * enemySpeed * Time.deltaTime);
+                transform.Translate(Vector2.right * direction * enemySpeed * Time.deltaTime);
 
             }
 
@@ -90,6 +95,7 @@ public class GroundEnemy : Enemy
                 if (Mathf.Abs(transform.position.x - startPos.x) > moveRange || outOfBounds)
                 {
                     defaultMovementdir *= -1;
+                    direction = defaultMovementdir;
                     startPos.x = transform.position.x;
 
                 }
@@ -97,6 +103,8 @@ public class GroundEnemy : Enemy
                 transform.Translate(Vector2.right * defaultMovementdir * enemySpeed * Time.deltaTime);
 
             }
+
+            HandleFlipping();
 
         }
     }
@@ -123,16 +131,48 @@ public class GroundEnemy : Enemy
         {
             moveDirection = -1;
         }
+        direction = moveDirection;
         bullet.SetDirection(moveDirection);
 
     }
 
-   
-
-    private void OnDrawGizmos()
+    void HandleFlipping()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawRay(transform.position, Vector2.up * 4);
+        if (direction > 0)
+        {
+            moveDirection = 1;
+        }
+        else if (direction < 0)
+        {
+            moveDirection = -1;
+        }
+
+        if (moveDirection != spriteDirection)
+        {
+            flip();
+        }
     }
+
+    void flip()
+    {
+        spriteDirection *= -1;
+        transform.localScale = new Vector3(spriteDirection, 1, 1);
+
+        // work around for health bar! change later
+        if (moveDirection == -1)
+        {
+
+            Vector2 healthParentScale = healthBar.parent.localScale;
+            healthParentScale.x = -1;
+            healthBar.parent.localScale = healthParentScale;
+        }
+        else
+        {
+            Vector2 healthParentScale = healthBar.parent.localScale;
+            healthParentScale.x = 1;
+            healthBar.parent.localScale = healthParentScale;
+        }
+    }
+
 
 }

@@ -25,9 +25,6 @@ public class Player : MonoBehaviour
     public bool isNearLadder;
 
     [HideInInspector]
-    public bool canClimb;
-
-    [HideInInspector]
     public bool isDownLadder;
 
     bool isJumpAttacking;
@@ -61,7 +58,6 @@ public class Player : MonoBehaviour
 
     bool isJumping = false;
 
-
     [SerializeField]
     ParticleSystem onHit;
 
@@ -77,18 +73,22 @@ public class Player : MonoBehaviour
 
     bool enemyContact = false;
 
-
     Enemy enemyInContact;
 
+    // when going above a certain height in ladder until grounded and down the ladder until grounded
+    // on ladder and certain height from floor -> turn it on
+    // going down ladder -> turn it on
+    // turn it off on grounded
+    public bool cameraFollow = false;
 
+    Floor currentFloor;
 
+    int currentFloorIndex;
 
-    int currentFloor;
-
-    public int CurrentFloor
+    public int CurrentFloorIndex
     {
-        set { currentFloor = value; }
-        get { return currentFloor; }
+        set { currentFloorIndex = value; }
+        get { return currentFloorIndex; }
     }
 
 
@@ -164,6 +164,15 @@ public class Player : MonoBehaviour
             //    xMovement = xInput;
             //}
 
+            // set camera follow
+            if ((isNearLadder && DistanceFromLevelFloor() > 6f) || (isDownLadder && !IsGrounded()))
+            {
+                cameraFollow = true;
+            }
+            else
+            {
+                cameraFollow = false;
+            }
 
 
             if (isJumpAttacking)
@@ -196,6 +205,13 @@ public class Player : MonoBehaviour
                 Fire();
             }
         }
+    }
+
+    float DistanceFromLevelFloor()
+    {
+        float distance = Mathf.Abs(currentFloor.transform.position.y - transform.position.y);
+
+        return distance;
     }
 
     void SetLadder()
@@ -244,11 +260,13 @@ public class Player : MonoBehaviour
         bool jumpKeyDown = Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W);
         
 
-        if (jumpKeyDown && (IsGrounded() || (canClimb && rigidbody.velocity.x == 0)))
+        if (jumpKeyDown && (IsGrounded() || (isNearLadder && rigidbody.velocity.x == 0)))
         {
             rigidbody.velocity = new Vector2(rigidbody.velocity.x, jumpPower);
             
         }
+
+      
 
         //if (rigidbody.velocity.y > 0)
         //{
@@ -258,7 +276,7 @@ public class Player : MonoBehaviour
 
 
         // come down faster
-        if (rigidbody.velocity.y < 0f)
+        if (rigidbody.velocity.y < 0f && !isNearLadder)
         {
             jumpTime = 0;
             rigidbody.velocity -= Vector2.down * Physics2D.gravity * fallFactor * Time.deltaTime;
@@ -343,7 +361,7 @@ public class Player : MonoBehaviour
 
     public int GetCurrentFloor()
     {
-        return CurrentFloor;
+        return CurrentFloorIndex;
     }
 
     public Door GetCurrentDoor()
@@ -358,17 +376,25 @@ public class Player : MonoBehaviour
         bullet.SetDirection(moveDirection);
     }
 
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(groundCheckPos.position, new Vector2(1f, 0.3f));
+    }
+
 
 
     public bool IsGrounded()
     {
         Collider2D ground = Physics2D.OverlapBox(groundCheckPos.position, new Vector2(1f, 0.3f), 0, groundLayer);
+       
 
 
         if (ground != null && ground.GetComponentInParent<Floor>())
         {
             Floor floor = ground.gameObject.GetComponentInParent<Floor>();
-            CurrentFloor = floor.CurrentFloor;
+            CurrentFloorIndex = floor.CurrentFloor;
+            currentFloor = floor;
 
             isGrounded = true;
             isJumpAttacking = false;
@@ -430,8 +456,6 @@ public class Player : MonoBehaviour
         if (collision.gameObject.GetComponent<Ladder>())
         {
             isNearLadder = true;
-            canClimb = true;
-
 
         }
         else if (collision.gameObject.GetComponent<Door>())
@@ -451,7 +475,7 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.GetComponent<Ladder>())
         {
-            isNearLadder = canClimb = false;
+            isNearLadder = false;
        
 
         }

@@ -20,10 +20,8 @@ public class CameraFollow : MonoBehaviour
 
 
     [SerializeField]
-    float ySmoothTimeUp = 0.35f;
+    float ySmoothTime = 0.3f;
 
-    [SerializeField]
-    float ySmoothTimeDown = 0.1f;
     [SerializeField]
     float xSmoothTime = 0.5f;
 
@@ -75,28 +73,12 @@ public class CameraFollow : MonoBehaviour
        
         targetPosition.x = target.x;
 
-        
 
 
-        if (GameManager.instance.player.canClimb || GameManager.instance.player.isDownLadder || GameManager.instance.player.IsGrounded())
+        if (GameManager.instance.player.cameraFollow || GameManager.instance.player.IsGrounded())
         {
-    
-            float ySmoothTime = ySmoothTimeUp;
-
-            if (GameManager.instance.player.isDownLadder)
-            {
-                ySmoothTime = ySmoothTimeDown;
-            }
-
-
-            // follow player y only while climbing up or down and grounded
-            if (GameManager.instance.player.IsGrounded())
-            {
-                targetPosition.y = Mathf.SmoothDamp(transform.position.y, target.y, ref velocity.y, ySmoothTime);
-            }
-            
+            targetPosition.y = Mathf.SmoothDamp(transform.position.y, target.y, ref velocity.y, ySmoothTime);
         }
-        
 
         transform.position = targetPosition;
 
